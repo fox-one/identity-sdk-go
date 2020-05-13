@@ -26,8 +26,8 @@ func Client() *resty.Client {
 	return restyClient
 }
 
-// Request Request
-func Request(ctx context.Context) *resty.Request {
+// NewRequest NewRequest
+func NewRequest(ctx context.Context) *resty.Request {
 	return Client().R().SetContext(ctx)
 }
 
@@ -61,7 +61,9 @@ func ParseResponse(r *resty.Response, obj interface{}) error {
 			}
 			return nil
 		}
+
 		return nil
 	}
+
 	return fmt.Errorf("%s", r.Status())
 }

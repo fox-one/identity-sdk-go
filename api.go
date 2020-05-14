@@ -14,12 +14,13 @@ type IDRequest struct {
 	ServerURL string `json:"host"`
 }
 
-func NewIDRequestBasic(authKey, authSecret string) *IDRequest {
+func NewIDRequestBasic(authKey, authSecret, serverURL string) *IDRequest {
 	ks := authKey + ":" + authSecret
 	ksStr := base64.StdEncoding.EncodeToString([]byte(ks))
 
 	id := &IDRequest{
 		AuthValue: fmt.Sprintf("Basic %s", ksStr),
+		ServerURL: serverURL,
 	}
 
 	return id

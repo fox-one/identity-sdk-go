@@ -102,3 +102,14 @@ func (ir IDRequest) Login(ctx context.Context, req *LoginRequest) (*User, error)
 
 	return &user, nil
 }
+
+// SyncKyc SyncKyc
+func (ir IDRequest) SyncKyc(ctx context.Context, req *KycSyncRequest) (bool, error) {
+	var success bool
+	err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/kyc/sync_profile"), req, success)
+	if err != nil {
+		return false, err
+	}
+
+	return success, nil
+}

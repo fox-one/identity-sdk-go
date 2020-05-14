@@ -1,5 +1,7 @@
 package identity
 
+import "time"
+
 // CreateUserReq CreateUserReq
 type CreateUserReq struct {
 	UserName    string `json:"username"`
@@ -45,4 +47,16 @@ type LoginRequest struct {
 	PhoneCode   string `json:"phone_code"`
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
+}
+
+type KycSyncRequest struct {
+	UserID      uint64    `json:"user_id"`
+	KycLevel    int       `json:"kyc_level"`
+	KycStatus   string    `json:"kyc_status"`
+	KycError    string    `json:"kyc_error"`
+	CertifiedAt time.Time `json:"certified_at"`
+	IDNo        string    `json:"id_no"`
+	Name        string    `json:"name"`
+	Country     string    `json:"country"`
+	IDType      string    `json:"id_type"`
 }

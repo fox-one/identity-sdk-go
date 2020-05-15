@@ -5,6 +5,7 @@ import "time"
 // CreateUserReq CreateUserReq
 type CreateUserReq struct {
 	UserName    string `json:"username"`
+	Type        string `json:"type"`
 	PhoneCode   string `json:"phone_code"`
 	PhoneNumber string `json:"phone_number"`
 	Email       string `json:"email"`

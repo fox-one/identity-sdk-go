@@ -116,3 +116,35 @@ func (ir IDRequest) SyncKyc(ctx context.Context, req *KycSyncRequest) (bool, err
 
 	return res.Success, nil
 }
+
+// GetHHBizToken GetHHBizToken
+func (ir IDRequest) GetHHBizToken(ctx context.Context, req *KycBizTokenRequest) (string, error) {
+	var bizTokenUrl string
+	err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s%s", ir.ServerURL, "v1/kyc/hh/faceid/token"), req, &bizTokenUrl)
+	if err != nil {
+		return "", err
+	}
+	return bizTokenUrl, nil
+}
+
+// GetZDBizToken GetZDBizToken
+func (ir IDRequest) GetZDBizToken(ctx context.Context, req *KycBizTokenRequest) (string, error) {
+	var bizTokenUrl string
+	err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s%s", ir.ServerURL, "v1/kyc/zd/faceid/token"), req, &bizTokenUrl)
+	if err != nil {
+		return "", err
+	}
+	return bizTokenUrl, nil
+}
+
+// GetKycStatusByUiamID GetKycStatusByUiamID
+func (ir IDRequest) GetKycProfileByUiamID(ctx context.Context, uiamID uint64) (*Profile, error) {
+	var profile = new(Profile)
+	err := Execute(ir.getRequest(ctx), "method", fmt.Sprintf("%s%s?id=%s", ir.ServerURL, "v1/kyc/profile", uiamID), nil, profile)
+	if err != nil {
+		return nil, err
+	}
+
+	return profile, nil
+
+}

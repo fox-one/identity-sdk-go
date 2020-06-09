@@ -62,3 +62,9 @@ type KycSyncRequest struct {
 	Country     string     `json:"country"`
 	IDType      string     `json:"id_type"`
 }
+
+// KycBizTokenRequest KycBizTokenRequest
+type KycBizTokenRequest struct {
+	OAuthID  string `json:"oauth_id"`
+	Provider string `json:"provider"`
+}

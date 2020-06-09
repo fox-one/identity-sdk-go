@@ -34,18 +34,9 @@ type Provider struct {
 
 // Profile Profile
 type Profile struct {
-	UserID           uint64     `json:"user_id"`
-	Country          string     `json:"country"`
-	Name             string     `json:"name"`
-	Gender           string     `json:"gender"`
-	IDType           string     `json:"id_type"`
-	IDNoEncrypted    string     `json:"id_no_encrypted"`
-	BirthEncrypted   string     `json:"birth_encrypted"`
-	IDDigest         string     `json:"id_digest"`
-	IDValidDateStart string     `json:"id_valid_date_start"`
-	IDValidDateEnd   string     `json:"id_valid_date_end"`
-	KycLevel         int        `json:"kyc_level"`
-	KycStatus        int        `json:"kyc_status"`
-	KycError         string     `json:"kyc_error"`
-	CertifiedAt      *time.Time `json:"certified_at"`
+	UserID      uint64    `json:"user_id"`
+	Name        string    `json:"name"`
+	KeyLevel    string    `json:"kyc_level"`
+	KycError    string    `json:"kyc_error"`
+	CertifiedAt time.Time `json:"certified_at"`
 }

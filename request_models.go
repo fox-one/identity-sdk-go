@@ -68,3 +68,4 @@ type KycBizTokenRequest struct {
 	OAuthID  string `json:"oauth_id"`
 	Provider string `json:"provider"`
 }
+

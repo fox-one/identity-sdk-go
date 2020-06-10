@@ -36,8 +36,9 @@ type Provider struct {
 type Profile struct {
 	UserID      uint64    `json:"user_id"`
 	Name        string    `json:"name"`
-	KycLevel    int    `json:"kyc_level"`
+	KycLevel    int       `json:"kyc_level"`
 	KycStatus   string    `json:"kyc_status"`
 	KycError    string    `json:"kyc_error"`
 	CertifiedAt time.Time `json:"certified_at"`
+	IDDigest    string    `json:"id_digest"`
 }

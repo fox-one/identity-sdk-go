@@ -77,7 +77,7 @@ func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, 
 // AuthByMixin AuthByMixin
 func (ir IDRequest) AuthByMixin(ctx context.Context, authReq *MixinAuthReq) (*User, error) {
 	var user User
-	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/auths/mixin"), authReq, &user); err != nil {
+	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/app/auths/mixin"), authReq, &user); err != nil {
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (ir IDRequest) AuthByMixin(ctx context.Context, authReq *MixinAuthReq) (*Us
 // AuthByFoxone AuthByFoxone
 func (ir IDRequest) AuthByFoxone(ctx context.Context, authReq *FoxoneAuthReq) (*User, error) {
 	var user User
-	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/auths/foxone"), authReq, &user); err != nil {
+	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/app/auths/foxone"), authReq, &user); err != nil {
 		return nil, err
 	}
 

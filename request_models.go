@@ -65,7 +65,6 @@ type KycSyncRequest struct {
 
 // KycBizTokenRequest KycBizTokenRequest
 type KycBizTokenRequest struct {
-	OAuthID  string `json:"oauth_id"`
-	Provider string `json:"provider"`
+	UserID    string `json:"user_id"`
+	ReturnUrl string `json:"return_url"`
 }
-

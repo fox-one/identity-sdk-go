@@ -148,7 +148,7 @@ func (ir IDRequest) GetKycProfileByUiamID(ctx context.Context, uiamID uint64) (*
 		return nil, err
 	}
 
-	profile.KycErrorMessage = KycResult[profile.KycError]
+	profile.KycErrorMessage = FaceidKycResult[profile.KycError]
 
 	return profile, nil
 }

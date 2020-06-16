@@ -44,15 +44,17 @@ type Profile struct {
 	IDDigest        string    `json:"id_digest"`
 }
 
-// KycResult KycResult
-var KycResult = map[string]string{
+// FaceidKycResult FaceidKycResult
+var FaceidKycResult = map[string]string{
 	// 活体成功
 	"1000:SUCCESS":         "待比对照片与参考数据照片或上传照片对比是同一个人",
 	"1000:LIVENESS_FINISH": "活体完成",
+
 	// 身份证相关 - 正确
 	"1001:SUCCESS":                  "尚未进行活体认证", // 识别出身份证人像面和国徽面均没有问题"
 	"1001:SUCCESS_BACKSIDE_SINGLE":  "只需识别国徽面时识别成功",
 	"1001:SUCCESS_FRONTSIDE_SINGLE": "只需识别人像面时识别成功",
+
 	// 身份证相关 - 错误
 	"1002:SUCCESS_ALMOST_FRONTSIDE":        "识别出身份证国徽面没有问题，身份证人像面内容上存在没有识别出来、或者出来的内容存在逻辑问题、识别出来的内容存在质量问题",
 	"1002:SUCCESS_ALMOST_BACKSIDE":         "识别出身份证人像面没有问题，身份证国徽面内容上存在没有识别出来、或者出来的内容存在逻辑问题、识别出来的内容存在质量问",
@@ -76,6 +78,7 @@ var KycResult = map[string]string{
 	"3100:IDCARD_PHOTO_NOTBACKSIDE":        "非身份证国徽面",
 	"3100:IDCARD_PHOTO_INVALID_SIZE":       "身份证图片超过尺寸限制",
 	"3200:FAIL_OCR_FAKE_IDCARD":            "假证",
+
 	// 活体 - 错误
 	"4100:FAIL_LIVING_FACE_ATTACK":  "云端活体验证失败",
 	"4100:CHANGE_FACE_ATTACK":       "活体验证视频中发生了换脸攻击（视频中不是同一个人）",
@@ -91,11 +94,12 @@ var KycResult = map[string]string{
 	"4200:VIDEO_OK":                 "活体验证视频可用",
 	"4200:VIDEO_MANY_TIMES":         "活体验证视频上传超过阈值（默认为3，get_biz_token接口中liveness_retry_count参数可以设置）",
 	"4200:VIDEO_INTERNAL_ERROR":     "活体验证内部错误",
+	"4200:BIZ_TOKEN_DENIED":         "传入的 biz_token 不符合要求",
+	"4200:AUTHENTICATION_FAIL":      "鉴权失败",
+	"4200:MOBILE_PHONE_NOT_SUPPORT": "手机在不支持列表里",
+	"4200:SDK_TOO_OLD":              "SDK版本过旧，已经不被支持",
+
 	// enterprise
-	"4200:BIZ_TOKEN_DENIED":             "传入的 biz_token 不符合要求",
-	"4200:AUTHENTICATION_FAIL":          "鉴权失败",
-	"4200:MOBILE_PHONE_NOT_SUPPORT":     "手机在不支持列表里",
-	"4200:SDK_TOO_OLD":                  "SDK版本过旧，已经不被支持",
 	"5000:API_KEY_BE_DISCONTINUED":      "api_key被停用",
 	"5000:IP_NOT_ALLOWED":               "不允许访问的IP",
 	"5000:NON_ENTERPRISE_CERTIFICATION": "客户未进行企业认证",
@@ -106,6 +110,7 @@ var KycResult = map[string]string{
 	"5000:BALANCE_NOT_ENOUGH":           "余额不足",
 	"5000:MORE_RETRY_TIMES":             "超过重试次数",
 	"5000:ACCOUNT_DISABLED":             "账户已停用",
+
 	// User - Error
 	"6000:NO_NETWORK_PERMISSION": "没有网络权限",
 	"6000:NO_CAMERA_PERMISSION":  "没有相机权限",

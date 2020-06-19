@@ -5,7 +5,9 @@ import (
 	"encoding/base64"
 	"fmt"
 
+	gin "github.com/gin-gonic/gin"
 	resty "github.com/go-resty/resty/v2"
+	goutil "github.com/lanvige/goutils"
 )
 
 // IDRequest IdentityRequest
@@ -22,13 +24,38 @@ func NewIDRequestBasic(authKey, authSecret, serverURL string) *IDRequest {
 		AuthValue: fmt.Sprintf("Basic %s", ksStr),
 		ServerURL: serverURL,
 	}
-
 	return id
+}
+
+// GenRequestID GenRequestID
+func GenRequestID(ctx context.Context) string {
+	var requestID string
+	if gin, ok := ctx.(*gin.Context); ok {
+		reqID := gin.GetHeader(RequestIDKey)
+		if reqID != "" {
+			requestID = reqID
+		}
+	}
+
+	if requestID == "" {
+		if reqID, ok := ctx.Value(RequestIDKey).(string); ok {
+			if reqID != "" {
+				requestID = reqID
+			}
+		}
+	}
+
+	if requestID == "" {
+		requestID = goutil.UUIDV4Gen()
+	}
+
+	return requestID
 }
 
 func (ir IDRequest) getRequest(ctx context.Context) *resty.Request {
 	return NewRequest(ctx).
-		SetHeader("Authorization", ir.AuthValue)
+		SetHeader("Authorization", ir.AuthValue).
+		SetHeader(RequestIDKey, GenRequestID(ctx))
 }
 
 // GetAllUsers GetAllUsers

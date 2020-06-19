@@ -3,6 +3,7 @@ package identity
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -13,6 +14,7 @@ import (
 
 var runOnce sync.Once
 var restyClient *resty.Client
+var RequestIDKey = "X-Request-ID"
 
 // Client Client
 func Client() *resty.Client {
@@ -43,6 +45,13 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 	r, err := request.Execute(strings.ToUpper(method), url)
 	if err != nil {
 		return err
+	}
+
+	// 检查requestid
+	sourceReqID := request.Header.Get(RequestIDKey)
+	returnReqID := r.Header().Get(RequestIDKey)
+	if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
+		return errors.New("RequestID Not Match")
 	}
 
 	fmt.Printf("resp.status:%s", r.Status())

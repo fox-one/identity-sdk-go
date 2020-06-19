@@ -46,7 +46,7 @@ func GenRequestID(ctx context.Context) string {
 	}
 
 	if requestID == "" {
-		requestID = goutil.UUIDV4Gen()
+		requestID = goutil.UUIDV4StringGen()
 	}
 
 	return requestID
@@ -76,19 +76,12 @@ func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 
 // GetUser GetUser
 func (ir IDRequest) GetUser(ctx context.Context, userID uint64) (*User, error) {
-	url := fmt.Sprintf("%s%s%d", ir.ServerURL, "/v1/users/", userID)
-	resp, err := ir.getRequest(ctx).Get(url)
-	if err != nil {
+	var user User
+	if err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s%s%d", ir.ServerURL, "/v1/users/", userID), nil, &user); err != nil {
 		return nil, err
 	}
 
-	var user = new(User)
-	err = ParseResponse(resp, &user)
-	if err != nil {
-		return nil, err
-	}
-
-	return user, nil
+	return &user, nil
 }
 
 // CreateUser CreateUser

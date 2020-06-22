@@ -81,14 +81,14 @@ type TokenCreateRequest struct {
 	Type   AuthTypeEnum   `json:"type"`
 	Scheme AuthSchemeEnum `json:"scheme"`
 
-	Audience  string `json:"aud,omitempty"`
+	Audience  string `json:"aud,omitempty"` // 这个表示 UIAM_ID
 	Issuer    string `json:"iss,omitempty"`
 	NotBefore int64  `json:"nbf,omitempty"`
 	Subject   string `json:"sub,omitempty"`
 
 	// Custom
-	Provider  string `json:"oap"`
-	UserID    string `json:"user_id"`
+	Provider  string `json:"oap"` // Mixin / FoxONE
+	UID       string `json:"uid"` // 这个 UID 表示的是第三方系统的 ID，像 ZOTC 里的那个自己的
 	SessionID string `json:"sid"`
 	Sign      string `json:"sig"`
 	SignAlg   string `json:"sal"`

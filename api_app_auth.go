@@ -40,3 +40,15 @@ func (ir IDRequest) GetAuths(ctx context.Context, provider string, offset, limit
 
 	return &auths, nil
 }
+
+// GenToken GenToken
+func (ir IDRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*TokenResponse, error) {
+	var tokenRes TokenResponse
+	var url = fmt.Sprintf("%s/v1/app/users/%v/tokens", ir.ServerURL, req.UserID)
+
+	if err := httputil.Execute(ir.getRequest(ctx), "POST", url, req, &tokenRes); err != nil {
+		return nil, err
+	}
+
+	return &tokenRes, nil
+}

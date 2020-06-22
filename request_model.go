@@ -75,3 +75,14 @@ type AuthListRequest struct {
 	Limit    uint64               `json:"limit"`
 	Provider AuthProviderTypeEnum `json:"provider"`
 }
+
+type TokenCreateRequest struct {
+	UserID    uint64         `json:"user_id"`
+	Type      AuthTypeEnum   `json:"type"`
+	Scheme    AuthSchemeEnum `json:"scheme"`
+	Provider  string         `json:"oap"`
+	SessionID string         `json:"sid"`
+	Sign      string         `json:"sig"`
+	SignAlg   string         `json:"sal"`
+	Duration  time.Duration  `json:"duration"` //  有效时长
+}

@@ -88,7 +88,7 @@ type TokenCreateRequest struct {
 
 	// Custom
 	Provider  string `json:"oap"`
-	UserID    uint64 `json:"user_id"`
+	UserID    string `json:"user_id"`
 	SessionID string `json:"sid"`
 	Sign      string `json:"sig"`
 	SignAlg   string `json:"sal"`

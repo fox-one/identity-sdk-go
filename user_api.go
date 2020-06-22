@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/fox-one/identity-sdk-go/utils"
-	"github.com/go-resty/resty/v2"
+	httputils "github.com/fox-one/identity-sdk-go/utils"
+
+	resty "github.com/go-resty/resty/v2"
 )
 
 // UserRequest UserRequest
@@ -23,18 +24,21 @@ func NewUserRequestJwt(token, serverURL string) *UserRequest {
 	return id
 }
 
-func (r UserRequest) getRequest(ctx context.Context) *resty.Request {
-	return utils.NewRequest(ctx).
-		SetHeader("Authorization", r.Authorization).
-		SetHeader(utils.RequestIDKey, utils.GenRequestID(ctx))
-}
-
-// FetchMe FetchMe
-func (r UserRequest) FetchMe(ctx context.Context) (*UserAuthsResponse, error) {
+// GetMe GetMe
+func (r UserRequest) GetMe(ctx context.Context) (*UserAuthsResponse, error) {
 	var res UserAuthsResponse
-	err := utils.Execute(r.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/user?expand=profile,authorizations.mixin,authorizations.foxone", r.ServerURL), nil, &res)
+	err := httputils.Execute(r.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/user?expand=profile,authorizations.mixin,authorizations.foxone", r.ServerURL), nil, &res)
 	if nil != err {
 		return nil, err
 	}
 	return &res, nil
+}
+
+// ============ private ============= //
+// ============ private ============= //
+
+func (r UserRequest) getRequest(ctx context.Context) *resty.Request {
+	return httputils.NewRequest(ctx).
+		SetHeader("Authorization", r.Authorization).
+		SetHeader(httputils.RequestIDKey, httputils.GenRequestID(ctx))
 }

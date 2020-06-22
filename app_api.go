@@ -4,9 +4,10 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/go-resty/resty/v2"
 
-	httpUtil "github.com/fox-one/identity-sdk-go/utils"
+	httputil "github.com/fox-one/identity-sdk-go/utils"
+
+	resty "github.com/go-resty/resty/v2"
 )
 
 // IDRequest IdentityRequest
@@ -27,16 +28,11 @@ func NewIDRequestBasic(authKey, authSecret, serverURL string) *IDRequest {
 	return id
 }
 
-func (ir IDRequest) getRequest(ctx context.Context) *resty.Request {
-	return httpUtil.NewRequest(ctx).
-		SetHeader("Authorization", ir.AuthValue).
-		SetHeader(httpUtil.RequestIDKey, httpUtil.GenRequestID(ctx))
-}
-
 // GetAllUsers GetAllUsers
 func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 	var users []*User
-	if err := httpUtil.Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/users", ir.ServerURL), nil, &users); err != nil {
+
+	if err := httputil.Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/users", ir.ServerURL), nil, &users); err != nil {
 		return nil, err
 	}
 
@@ -44,21 +40,33 @@ func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 }
 
 // GetUser GetUser
-func (ir IDRequest) GetUser(ctx context.Context, userID uint64) (*User, error) {
+func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*UserAuthsResponse, error) {
+	var resp UserAuthsResponse
+	url := fmt.Sprintf("%s/v1/users/%v/?expand=?expand=profile,authorizations.mixin,authorizations.foxone", ir.ServerURL, userID)
+
+	if err := httputil.Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// CreateUser CreateUser
+func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, error) {
 	var user User
-	if err := httpUtil.Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s%s%d", ir.ServerURL, "/v1/users/", userID), nil, &user); err != nil {
+
+	if err := httputil.Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/users"), req, &user); err != nil {
 		return nil, err
 	}
 
 	return &user, nil
 }
 
-// CreateUser CreateUser
-func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, error) {
-	var user User
-	if err := httpUtil.Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/users"), req, &user); err != nil {
-		return nil, err
-	}
+// ============ private ============= //
+// ============ private ============= //
 
-	return &user, nil
+func (ir IDRequest) getRequest(ctx context.Context) *resty.Request {
+	return httputil.NewRequest(ctx).
+		SetHeader("Authorization", ir.AuthValue).
+		SetHeader(httputil.RequestIDKey, httputil.GenRequestID(ctx))
 }

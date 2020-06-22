@@ -24,6 +24,7 @@ type AuthsResponse struct {
 	FoxAuth   interface{} `json:"foxone,omitempty"`
 }
 
+// MixinAuthResponse MixinAuthResponse
 type MixinAuthResponse struct {
 	UserID     uint64    `json:"user_id"`
 	Provider   string    `json:"provider"`

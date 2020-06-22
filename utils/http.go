@@ -1,4 +1,4 @@
-package identity
+package utils
 
 import (
 	"context"
@@ -9,12 +9,20 @@ import (
 	"sync"
 	"time"
 
-	resty "github.com/go-resty/resty/v2"
+	"github.com/gin-gonic/gin"
+	"github.com/go-resty/resty/v2"
+	goutil "github.com/lanvige/goutils"
 )
 
+var requestIDKey = "X-Request-ID"
 var runOnce sync.Once
 var restyClient *resty.Client
 var RequestIDKey = "X-Request-ID"
+
+// NewRequest NewRequest
+func NewRequest(ctx context.Context) *resty.Request {
+	return Client().R().SetContext(ctx)
+}
 
 // Client Client
 func Client() *resty.Client {
@@ -26,11 +34,6 @@ func Client() *resty.Client {
 	})
 
 	return restyClient
-}
-
-// NewRequest NewRequest
-func NewRequest(ctx context.Context) *resty.Request {
-	return Client().R().SetContext(ctx)
 }
 
 // Execute Execute
@@ -48,8 +51,8 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 	}
 
 	// 检查requestid
-	sourceReqID := request.Header.Get(RequestIDKey)
-	returnReqID := r.Header().Get(RequestIDKey)
+	sourceReqID := request.Header.Get(requestIDKey)
+	returnReqID := r.Header().Get(requestIDKey)
 	if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
 		return errors.New("RequestID Not Match")
 	}
@@ -75,4 +78,29 @@ func ParseResponse(r *resty.Response, obj interface{}) error {
 	}
 
 	return fmt.Errorf("%s", r.Status())
+}
+
+// GenRequestID GenRequestID
+func GenRequestID(ctx context.Context) string {
+	var requestID string
+	if gin, ok := ctx.(*gin.Context); ok {
+		reqID := gin.GetHeader(requestIDKey)
+		if reqID != "" {
+			requestID = reqID
+		}
+	}
+
+	if requestID == "" {
+		if reqID, ok := ctx.Value(requestIDKey).(string); ok {
+			if reqID != "" {
+				requestID = reqID
+			}
+		}
+	}
+
+	if requestID == "" {
+		requestID = goutil.UUIDV4StringGen()
+	}
+
+	return requestID
 }

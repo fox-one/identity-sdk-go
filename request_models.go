@@ -66,5 +66,43 @@ type KycSyncRequest struct {
 // KycBizTokenRequest KycBizTokenRequest
 type KycBizTokenRequest struct {
 	UserID    string `json:"user_id"`
-	ReturnUrl string `json:"return_url"`
+	ReturnURL string `json:"return_url"`
+}
+
+// AuthListRequest 用户表求
+type AuthListRequest struct {
+	Offset   uint64               `json:"offset" `
+	Limit    uint64               `json:"limit"`
+	Provider AuthProviderTypeEnum `json:"provider"`
+}
+
+// AuthProviderTypeEnum 枚举
+type AuthProviderTypeEnum string
+
+const (
+	// AuthProviderTypeEnumMixin offer
+	AuthProviderTypeEnumMixin AuthProviderTypeEnum = "mixin"
+	// AuthProviderTypeEnumFoxone order
+	AuthProviderTypeEnumFoxone AuthProviderTypeEnum = "foxone"
+	// AuthProviderTypeEnumWechat wechat
+	AuthProviderTypeEnumWechat AuthProviderTypeEnum = "wechat"
+	// AuthProviderTypeEnumAlipay alipay
+	AuthProviderTypeEnumAlipay AuthProviderTypeEnum = "alipay"
+	// AuthProviderTypeEnumUnkonwn other
+	AuthProviderTypeEnumUnkonwn AuthProviderTypeEnum = "unkonwn"
+)
+
+func (e AuthProviderTypeEnum) String() string {
+	switch e {
+	case AuthProviderTypeEnumMixin:
+		return "mixin"
+	case AuthProviderTypeEnumFoxone:
+		return "foxone"
+	case AuthProviderTypeEnumWechat:
+		return "wechat"
+	case AuthProviderTypeEnumAlipay:
+		return "alipay"
+	default:
+		return "unkonwn"
+	}
 }

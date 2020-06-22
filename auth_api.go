@@ -28,9 +28,10 @@ func (ir IDRequest) AuthByFoxone(ctx context.Context, authReq *FoxoneAuthReq) (*
 }
 
 // GetAuths GetAuths
-func (ir IDRequest) GetAuths(ctx context.Context, authListReq *AuthListRequest) (*User, error) {
+func (ir IDRequest) GetAuths(ctx context.Context, provider string, start, limit int) (*User, error) {
 	var user User
-	var url = fmt.Sprintf("%s/v1/app/auths?provider=%s&limit=%v&offset=%v", ir.ServerURL, authListReq.Provider, authListReq.Limit, authListReq.Offset)
+
+	var url = fmt.Sprintf("%s/v1/app/auths?provider=%s&limit=%v&offset=%v", ir.ServerURL, provider, start, limit)
 
 	if err := httputil.Execute(ir.getRequest(ctx), "GET", url, nil, &user); err != nil {
 		return nil, err

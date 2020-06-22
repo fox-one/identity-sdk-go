@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"strings"
 
 	httputil "github.com/fox-one/identity-sdk-go/utils"
 
@@ -42,7 +43,19 @@ func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 // GetUser GetUser
 func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*UserAuthsResponse, error) {
 	var resp UserAuthsResponse
-	url := fmt.Sprintf("%s/v1/users/%v/?expand=?expand=profile,authorizations.mixin,authorizations.foxone", ir.ServerURL, userID)
+
+	var expand = make([]string, 0)
+	if profile {
+		expand = append(expand, "profile")
+	}
+	if mixinAuth {
+		expand = append(expand, "authorizations.mixin")
+	}
+	if foxAuth {
+		expand = append(expand, "authorizations.foxone")
+	}
+
+	url := fmt.Sprintf("%s/v1/users/%v/?expand=%s", ir.ServerURL, userID, strings.Join(expand, ","))
 
 	if err := httputil.Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
 		return nil, err

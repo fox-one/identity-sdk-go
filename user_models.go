@@ -20,8 +20,8 @@ type UserAuthsResponse struct {
 
 // AuthsResponse AuthsResponse
 type AuthsResponse struct {
-	MixinAuth interface{} `json:"mixin,omitempty"`
-	FoxAuth   interface{} `json:"foxone,omitempty"`
+	MixinAuth *MixinAuthResponse `json:"mixin,omitempty"`
+	FoxAuth   *FoxAuthResponse `json:"foxone,omitempty"`
 }
 
 // MixinAuthResponse MixinAuthResponse

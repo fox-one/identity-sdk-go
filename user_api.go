@@ -3,9 +3,9 @@ package identity
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	httputils "github.com/fox-one/identity-sdk-go/utils"
-
 	resty "github.com/go-resty/resty/v2"
 )
 
@@ -25,9 +25,21 @@ func NewUserRequestJwt(token, serverURL string) *UserRequest {
 }
 
 // GetMe GetMe
-func (r UserRequest) GetMe(ctx context.Context) (*UserAuthsResponse, error) {
+func (r UserRequest) GetMe(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*UserAuthsResponse, error) {
 	var res UserAuthsResponse
-	err := httputils.Execute(r.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/user?expand=profile,authorizations.mixin,authorizations.foxone", r.ServerURL), nil, &res)
+
+	var expand = make([]string, 0)
+	if profile {
+		expand = append(expand, "profile")
+	}
+	if mixinAuth {
+		expand = append(expand, "authorizations.mixin")
+	}
+	if foxAuth {
+		expand = append(expand, "authorizations.foxone")
+	}
+
+	err := httputils.Execute(r.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/user?expand=%s", r.ServerURL, strings.Join(expand, ",")), nil, &res)
 	if nil != err {
 		return nil, err
 	}

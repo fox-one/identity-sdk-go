@@ -9,8 +9,8 @@ import (
 )
 
 // GetAllUsers GetAllUsers
-func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
-	var users []*User
+func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*UserAuthsResponse, error) {
+	var users []*UserAuthsResponse
 
 	if err := httputil.Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/users", ir.ServerURL), nil, &users); err != nil {
 		return nil, err
@@ -44,8 +44,8 @@ func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAu
 }
 
 // CreateUser CreateUser
-func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, error) {
-	var user User
+func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*UserAuthsResponse, error) {
+	var user UserAuthsResponse
 
 	if err := httputil.Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/users"), req, &user); err != nil {
 		return nil, err

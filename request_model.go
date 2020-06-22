@@ -75,34 +75,3 @@ type AuthListRequest struct {
 	Limit    uint64               `json:"limit"`
 	Provider AuthProviderTypeEnum `json:"provider"`
 }
-
-// AuthProviderTypeEnum 枚举
-type AuthProviderTypeEnum string
-
-const (
-	// AuthProviderTypeEnumMixin offer
-	AuthProviderTypeEnumMixin AuthProviderTypeEnum = "mixin"
-	// AuthProviderTypeEnumFoxone order
-	AuthProviderTypeEnumFoxone AuthProviderTypeEnum = "foxone"
-	// AuthProviderTypeEnumWechat wechat
-	AuthProviderTypeEnumWechat AuthProviderTypeEnum = "wechat"
-	// AuthProviderTypeEnumAlipay alipay
-	AuthProviderTypeEnumAlipay AuthProviderTypeEnum = "alipay"
-	// AuthProviderTypeEnumUnkonwn other
-	AuthProviderTypeEnumUnkonwn AuthProviderTypeEnum = "unkonwn"
-)
-
-func (e AuthProviderTypeEnum) String() string {
-	switch e {
-	case AuthProviderTypeEnumMixin:
-		return "mixin"
-	case AuthProviderTypeEnumFoxone:
-		return "foxone"
-	case AuthProviderTypeEnumWechat:
-		return "wechat"
-	case AuthProviderTypeEnumAlipay:
-		return "alipay"
-	default:
-		return "unkonwn"
-	}
-}

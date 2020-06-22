@@ -4,6 +4,20 @@ import (
 	"time"
 )
 
+// AuthorizationResponse AuthorizationResponse
+type AuthorizationResponse struct {
+	ID         uint64               `json:"id"`
+	UserID     uint64               `json:"user_id"`
+	AppID      uint32               `json:"app_id"`
+	Provider   AuthProviderTypeEnum `json:"provider"`
+	OauthID    string               `json:"oauth_id"`
+	UnionID    string               `json:"union_id"`
+	AppUserID  string               `json:"app_user_id"`
+	Credential string               `json:"credential"`
+	CreatedAt  time.Time            `json:"created_at"`
+	UpdatedAt  time.Time            `json:"updated_at"`
+}
+
 // UserAuthsResponse User
 type UserAuthsResponse struct {
 	UserID      uint64           `json:"id"`
@@ -21,7 +35,7 @@ type UserAuthsResponse struct {
 // AuthsResponse AuthsResponse
 type AuthsResponse struct {
 	MixinAuth *MixinAuthResponse `json:"mixin,omitempty"`
-	FoxAuth   *FoxAuthResponse `json:"foxone,omitempty"`
+	FoxAuth   *FoxAuthResponse   `json:"foxone,omitempty"`
 }
 
 // MixinAuthResponse MixinAuthResponse
@@ -46,13 +60,33 @@ type FoxAuthResponse struct {
 	UpdatedAt  time.Time `json:"updated_at"`
 }
 
-// ProfileResponse profile
-type ProfileResponse struct {
-	UserID      uint64    `json:"user_id"`
-	Name        string    `json:"name,omitempty"`
-	KycLevel    string    `json:"kyc_level,omitempty"`
-	KycStatus   string    `json:"kyc_status,omitempty"`
-	KycError    string    `json:"kyc_error,omitempty"`
-	IDDigest    string    `json:"id_digest,omitempty"`
-	CertifiedAt time.Time `json:"certified_at"`
+// AuthProviderTypeEnum 枚举
+type AuthProviderTypeEnum string
+
+const (
+	// AuthProviderTypeEnumMixin offer
+	AuthProviderTypeEnumMixin AuthProviderTypeEnum = "mixin"
+	// AuthProviderTypeEnumFoxone order
+	AuthProviderTypeEnumFoxone AuthProviderTypeEnum = "foxone"
+	// AuthProviderTypeEnumWechat wechat
+	AuthProviderTypeEnumWechat AuthProviderTypeEnum = "wechat"
+	// AuthProviderTypeEnumAlipay alipay
+	AuthProviderTypeEnumAlipay AuthProviderTypeEnum = "alipay"
+	// AuthProviderTypeEnumUnkonwn other
+	AuthProviderTypeEnumUnkonwn AuthProviderTypeEnum = "unkonwn"
+)
+
+func (e AuthProviderTypeEnum) String() string {
+	switch e {
+	case AuthProviderTypeEnumMixin:
+		return "mixin"
+	case AuthProviderTypeEnumFoxone:
+		return "foxone"
+	case AuthProviderTypeEnumWechat:
+		return "wechat"
+	case AuthProviderTypeEnumAlipay:
+		return "alipay"
+	default:
+		return "unkonwn"
+	}
 }

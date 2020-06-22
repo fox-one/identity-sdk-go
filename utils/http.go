@@ -9,15 +9,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gin-gonic/gin"
-	"github.com/go-resty/resty/v2"
+	gin "github.com/gin-gonic/gin"
+	resty "github.com/go-resty/resty/v2"
 	goutil "github.com/lanvige/goutils"
 )
 
-var requestIDKey = "X-Request-ID"
+// RequestIDKey RequestIDKey
+var RequestIDKey = "X-Request-ID"
 var runOnce sync.Once
 var restyClient *resty.Client
-var RequestIDKey = "X-Request-ID"
 
 // NewRequest NewRequest
 func NewRequest(ctx context.Context) *resty.Request {
@@ -51,8 +51,9 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 	}
 
 	// 检查requestid
-	sourceReqID := request.Header.Get(requestIDKey)
-	returnReqID := r.Header().Get(requestIDKey)
+	sourceReqID := request.Header.Get(RequestIDKey)
+	returnReqID := r.Header().Get(RequestIDKey)
+
 	if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
 		return errors.New("RequestID Not Match")
 	}
@@ -83,15 +84,16 @@ func ParseResponse(r *resty.Response, obj interface{}) error {
 // GenRequestID GenRequestID
 func GenRequestID(ctx context.Context) string {
 	var requestID string
+
 	if gin, ok := ctx.(*gin.Context); ok {
-		reqID := gin.GetHeader(requestIDKey)
+		reqID := gin.GetHeader(RequestIDKey)
 		if reqID != "" {
 			requestID = reqID
 		}
 	}
 
 	if requestID == "" {
-		if reqID, ok := ctx.Value(requestIDKey).(string); ok {
+		if reqID, ok := ctx.Value(RequestIDKey).(string); ok {
 			if reqID != "" {
 				requestID = reqID
 			}

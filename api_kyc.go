@@ -28,16 +28,3 @@ func (ir IDRequest) GetZDBizToken(ctx context.Context, userID uint64, returnURL 
 
 	return result["url"].(string), nil
 }
-
-// GetKycProfileByUiamID GetKycStatusByUiamID
-func (ir IDRequest) GetKycProfileByUiamID(ctx context.Context, uiamID uint64) (*Profile, error) {
-	var profile = new(Profile)
-
-	if err := httputil.Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s%s?id=%v", ir.ServerURL, "/v1/kyc/profile", uiamID), nil, profile); err != nil {
-		return nil, err
-	}
-
-	profile.KycErrorMessage = FaceidKycResult[profile.KycError]
-
-	return profile, nil
-}

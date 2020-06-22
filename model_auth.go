@@ -18,6 +18,11 @@ type AuthorizationResponse struct {
 	UpdatedAt  time.Time            `json:"updated_at"`
 }
 
+type AuthorizationListResponse struct {
+	Data       []*AuthorizationResponse `json:"data"`
+	Pagination Pagination               `json:"pagination"`
+}
+
 // UserAuthsResponse User
 type UserAuthsResponse struct {
 	UserID      uint64           `json:"id"`

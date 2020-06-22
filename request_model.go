@@ -78,12 +78,21 @@ type AuthListRequest struct {
 
 // TokenCreateRequest TokenCreateRequest
 type TokenCreateRequest struct {
-	UserID    uint64         `json:"user_id"`
-	Type      AuthTypeEnum   `json:"type"`
-	Scheme    AuthSchemeEnum `json:"scheme"`
-	Provider  string         `json:"oap"`
-	SessionID string         `json:"sid"`
-	Sign      string         `json:"sig"`
-	SignAlg   string         `json:"sal"`
-	Duration  time.Duration  `json:"duration"` //  有效时长
+	Type   AuthTypeEnum   `json:"type"`
+	Scheme AuthSchemeEnum `json:"scheme"`
+
+	Audience  string `json:"aud,omitempty"`
+	Issuer    string `json:"iss,omitempty"`
+	NotBefore int64  `json:"nbf,omitempty"`
+	Subject   string `json:"sub,omitempty"`
+
+	// Custom
+	Provider  string `json:"oap"`
+	UserID    uint64 `json:"user_id"`
+	SessionID string `json:"sid"`
+	Sign      string `json:"sig"`
+	SignAlg   string `json:"sal"`
+
+	// ExpriedAt
+	Duration time.Duration `json:"duration"` //  有效时长
 }

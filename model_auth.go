@@ -176,6 +176,7 @@ func (e AuthSchemeEnum) String() string {
 // AppJWTPayload AppJWTPayload
 type AppJWTPayload struct {
 	jwtgo.StandardClaims
+
 	UID           string         `json:"uid,omitempty"`
 	Mode          AuthSchemeEnum `json:"mode,omitempty"`
 	OAuthProvider string         `json:"oap,omitempty"` //oap: OAuth Provider

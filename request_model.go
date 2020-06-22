@@ -76,6 +76,7 @@ type AuthListRequest struct {
 	Provider AuthProviderTypeEnum `json:"provider"`
 }
 
+// TokenCreateRequest TokenCreateRequest
 type TokenCreateRequest struct {
 	UserID    uint64         `json:"user_id"`
 	Type      AuthTypeEnum   `json:"type"`

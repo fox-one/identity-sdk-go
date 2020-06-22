@@ -40,7 +40,10 @@ func (r UserRequest) GetMe(ctx context.Context, userID uint64, profile, mixinAut
 		expand = append(expand, "authorizations.foxone")
 	}
 
-	if err := httputils.Execute(r.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/user?expand=%s", r.ServerURL, strings.Join(expand, ",")), nil, &res); nil != err {
+	url := fmt.Sprintf("%s/v1/user?expand=%s", r.ServerURL, strings.Join(expand, ","))
+
+	// Request
+	if err := httputils.Execute(r.getRequest(ctx), "GET", url, nil, &res); nil != err {
 		return nil, err
 	}
 

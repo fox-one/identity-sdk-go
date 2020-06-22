@@ -2,6 +2,8 @@ package identity
 
 import (
 	"time"
+
+	jwtgo "github.com/dgrijalva/jwt-go"
 )
 
 // AuthorizationResponse AuthorizationResponse
@@ -18,6 +20,7 @@ type AuthorizationResponse struct {
 	UpdatedAt  time.Time            `json:"updated_at"`
 }
 
+// AuthorizationListResponse AuthorizationListResponse
 type AuthorizationListResponse struct {
 	Data       []*AuthorizationResponse `json:"data"`
 	Pagination Pagination               `json:"pagination"`
@@ -168,4 +171,15 @@ func (e AuthSchemeEnum) String() string {
 	default:
 		return "unkonwn"
 	}
+}
+
+// AppJWTPayload AppJWTPayload
+type AppJWTPayload struct {
+	jwtgo.StandardClaims
+	UID           string         `json:"uid,omitempty"`
+	Mode          AuthSchemeEnum `json:"mode,omitempty"`
+	OAuthProvider string         `json:"oap,omitempty"` //oap: OAuth Provider
+	SessionID     string         `json:"sid,omitempty"`
+	Sign          string         `json:"sig,omitempty"`
+	SignAlg       string         `json:"sal,omitempty"`
 }

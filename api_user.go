@@ -21,6 +21,7 @@ func NewUserRequestJwt(token, serverURL string) *UserRequest {
 		Authorization: fmt.Sprintf("Bearer %s", token),
 		ServerURL:     serverURL,
 	}
+
 	return id
 }
 
@@ -39,10 +40,10 @@ func (r UserRequest) GetMe(ctx context.Context, userID uint64, profile, mixinAut
 		expand = append(expand, "authorizations.foxone")
 	}
 
-	err := httputils.Execute(r.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/user?expand=%s", r.ServerURL, strings.Join(expand, ",")), nil, &res)
-	if nil != err {
+	if err := httputils.Execute(r.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/user?expand=%s", r.ServerURL, strings.Join(expand, ",")), nil, &res); nil != err {
 		return nil, err
 	}
+
 	return &res, nil
 }
 

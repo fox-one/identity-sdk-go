@@ -52,3 +52,15 @@ func (ir IDRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*Tok
 
 	return &tokenRes, nil
 }
+
+// GetAuthByOAuthID GetAuthByOAuthID
+func (ir IDRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProviderTypeEnum, oauthID string) (*Authorization, error) {
+	var auth Authorization
+	var url = fmt.Sprintf("%s/v1/app/%s/auths/%s", ir.ServerURL, provider, oauthID)
+
+	if err := httputil.Execute(ir.getRequest(ctx), "GET", url, nil, &auth); err != nil {
+		return nil, err
+	}
+
+	return &auth, nil
+}

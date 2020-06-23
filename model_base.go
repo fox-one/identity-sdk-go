@@ -8,3 +8,17 @@ type Pagination struct {
 	Total  uint64 `json:"total,omitempty"`
 	Pages  uint64 `json:"pages,omitempty"`
 }
+
+// AppError AppError
+type AppError struct {
+	ErrorCode int    `json:"code"`
+	ErrorMsg  string `json:"description"`
+}
+
+// NewAppError NewAppError
+func NewAppError(msg string) *AppError {
+	return &AppError{
+		ErrorCode: 5000,
+		ErrorMsg:  msg,
+	}
+}

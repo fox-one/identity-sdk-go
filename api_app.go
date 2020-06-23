@@ -5,8 +5,6 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	httputil "github.com/fox-one/identity-sdk-go/utils"
-
 	resty "github.com/go-resty/resty/v2"
 )
 
@@ -33,7 +31,7 @@ func NewIDRequestBasic(authKey, authSecret, serverURL string) *IDRequest {
 // ============ private ============= //
 
 func (ir IDRequest) getRequest(ctx context.Context) *resty.Request {
-	return httputil.NewRequest(ctx).
+	return NewRequest(ctx).
 		SetHeader("Authorization", ir.AuthValue).
-		SetHeader(httputil.RequestIDKey, httputil.GenRequestID(ctx))
+		SetHeader(RequestIDKey, GenRequestID(ctx))
 }

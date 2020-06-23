@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	httputils "github.com/fox-one/identity-sdk-go/utils"
 	resty "github.com/go-resty/resty/v2"
 )
 
@@ -26,7 +25,7 @@ func NewUserRequestJwt(token, serverURL string) *UserRequest {
 }
 
 // GetMe GetMe
-func (r UserRequest) GetMe(ctx context.Context, profile, mixinAuth, foxAuth bool) (*User, error) {
+func (r UserRequest) GetMe(ctx context.Context, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
 	var res User
 
 	var expand = make([]string, 0)
@@ -43,7 +42,7 @@ func (r UserRequest) GetMe(ctx context.Context, profile, mixinAuth, foxAuth bool
 	url := fmt.Sprintf("%s/v1/user?expand=%s", r.ServerURL, strings.Join(expand, ","))
 
 	// Request
-	if err := httputils.Execute(r.getRequest(ctx), "GET", url, nil, &res); nil != err {
+	if err := Execute(r.getRequest(ctx), "GET", url, nil, &res); nil != err {
 		return nil, err
 	}
 
@@ -54,7 +53,7 @@ func (r UserRequest) GetMe(ctx context.Context, profile, mixinAuth, foxAuth bool
 // ============ private ============= //
 
 func (r UserRequest) getRequest(ctx context.Context) *resty.Request {
-	return httputils.NewRequest(ctx).
+	return NewRequest(ctx).
 		SetHeader("Authorization", r.Authorization).
-		SetHeader(httputils.RequestIDKey, httputils.GenRequestID(ctx))
+		SetHeader(RequestIDKey, GenRequestID(ctx))
 }

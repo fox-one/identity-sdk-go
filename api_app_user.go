@@ -4,15 +4,13 @@ import (
 	"context"
 	"fmt"
 	"strings"
-
-	httputil "github.com/fox-one/identity-sdk-go/utils"
 )
 
 // GetAllUsers GetAllUsers
-func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
+func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, *AppError) {
 	var users []*User
 
-	if err := httputil.Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/users", ir.ServerURL), nil, &users); err != nil {
+	if err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/users", ir.ServerURL), nil, &users); err != nil {
 		return nil, err
 	}
 
@@ -20,7 +18,7 @@ func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 }
 
 // GetUser GetUser
-func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, error) {
+func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
 	var resp User
 
 	var expand = make([]string, 0)
@@ -36,7 +34,7 @@ func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAu
 
 	url := fmt.Sprintf("%s/v1/users/%v/?expand=%s", ir.ServerURL, userID, strings.Join(expand, ","))
 
-	if err := httputil.Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
+	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
 		return nil, err
 	}
 
@@ -44,10 +42,10 @@ func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAu
 }
 
 // CreateUser CreateUser
-func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, error) {
+func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, *AppError) {
 	var user User
 
-	if err := httputil.Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/users"), req, &user); err != nil {
+	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/users"), req, &user); err != nil {
 		return nil, err
 	}
 

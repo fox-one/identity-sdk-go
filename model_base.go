@@ -12,7 +12,7 @@ type Pagination struct {
 // AppError AppError
 type AppError struct {
 	ErrorCode int    `json:"code"`
-	ErrorMsg  string `json:"description"`
+	ErrorMsg  string `json:"message"`
 }
 
 // Error Error

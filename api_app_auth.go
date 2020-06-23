@@ -8,8 +8,9 @@ import (
 // AuthByMixin AuthByMixin
 func (ir IDRequest) AuthByMixin(ctx context.Context, authReq *MixinAuthReq) (*User, *AppError) {
 	var userResp User
-
+	fmt.Println("================auth mixin====authReq==", authReq)
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/app/auths/mixin"), authReq, &userResp); err != nil {
+		fmt.Println("================auth mixin=err==", err)
 		return nil, err
 	}
 

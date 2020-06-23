@@ -1,5 +1,7 @@
 package identity
 
+import "fmt"
+
 // Pagination Pagination
 type Pagination struct {
 	Offset uint64 `json:"offset,omitempty"`
@@ -17,6 +19,7 @@ type AppError struct {
 
 // Error Error
 func (err *AppError) Error() string {
+	fmt.Println("======error=====error==nil=====", err == nil)
 	return err.ErrorMsg
 }
 

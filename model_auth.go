@@ -2,12 +2,10 @@ package identity
 
 import (
 	"time"
-
-	jwtgo "github.com/dgrijalva/jwt-go"
 )
 
-// AuthorizationResponse AuthorizationResponse
-type AuthorizationResponse struct {
+// Authorization Authorization
+type Authorization struct {
 	ID         uint64               `json:"id"`
 	UserID     uint64               `json:"user_id"`
 	AppID      uint32               `json:"app_id"`
@@ -20,34 +18,20 @@ type AuthorizationResponse struct {
 	UpdatedAt  time.Time            `json:"updated_at"`
 }
 
-// AuthorizationListResponse AuthorizationListResponse
-type AuthorizationListResponse struct {
-	Data       []*AuthorizationResponse `json:"data"`
-	Pagination Pagination               `json:"pagination"`
+// AuthorizationList AuthorizationList
+type AuthorizationList struct {
+	Data       []*Authorization `json:"data"`
+	Pagination Pagination       `json:"pagination"`
 }
 
-// UserAuthsResponse User
-type UserAuthsResponse struct {
-	UserID      uint64           `json:"id"`
-	UserName    string           `json:"user_name"`
-	PhoneCode   string           `json:"phone_code"`
-	PhoneNumber string           `json:"phone_number"`
-	Email       string           `json:"email"`
-	Description string           `json:"description"`
-	Auths       *AuthsResponse   `json:"authorizations,omitempty"`
-	Profile     *ProfileResponse `json:"profile,omitempty"`
-	Status      string           `json:"status"`
-	CreatedAt   time.Time        `json:"created_at"`
+// AuthObject Auths
+type AuthObject struct {
+	MixinAuth *MixinAuth `json:"mixin,omitempty"`
+	FoxAuth   *FoxAuth   `json:"foxone,omitempty"`
 }
 
-// AuthsResponse AuthsResponse
-type AuthsResponse struct {
-	MixinAuth *MixinAuthResponse `json:"mixin,omitempty"`
-	FoxAuth   *FoxAuthResponse   `json:"foxone,omitempty"`
-}
-
-// MixinAuthResponse MixinAuthResponse
-type MixinAuthResponse struct {
+// MixinAuth MixinAuth
+type MixinAuth struct {
 	UserID     uint64    `json:"user_id"`
 	Provider   string    `json:"provider"`
 	OauthID    string    `json:"oauth_id"`
@@ -57,8 +41,8 @@ type MixinAuthResponse struct {
 	UpdatedAt  time.Time `json:"updated_at"`
 }
 
-// FoxAuthResponse FoxAuthResponse
-type FoxAuthResponse struct {
+// FoxAuth FoxAuth
+type FoxAuth struct {
 	UserID     uint64    `json:"user_id"`
 	Provider   string    `json:"provider"`
 	OauthID    string    `json:"oauth_id"`
@@ -68,17 +52,8 @@ type FoxAuthResponse struct {
 	UpdatedAt  time.Time `json:"updated_at"`
 }
 
-// TokenResponse profile
-type TokenResponse struct {
-	AppID     uint32         `json:"app_id,omitempty"`
-	UserID    uint64         `json:"user_id,omitempty"`
-	Type      AuthTypeEnum   `json:"type,omitempty"`
-	Scheme    AuthSchemeEnum `json:"scheme,omitempty"`
-	Provider  string         `json:"oap,omitempty"`
-	Key       string         `json:"sid,omitempty"`
-	ExpriedAt *time.Time     `json:"expried_at,omitempty"`
-	Token     string         `json:"token,omitempty"`
-}
+// ================ 枚举 ================== //
+// ================ 枚举 ================== //
 
 // AuthProviderTypeEnum 枚举
 type AuthProviderTypeEnum string
@@ -171,16 +146,4 @@ func (e AuthSchemeEnum) String() string {
 	default:
 		return "unkonwn"
 	}
-}
-
-// AppJWTPayload AppJWTPayload
-type AppJWTPayload struct {
-	jwtgo.StandardClaims
-
-	UID           string         `json:"uid,omitempty"`
-	Mode          AuthSchemeEnum `json:"mode,omitempty"`
-	OAuthProvider string         `json:"oap,omitempty"` //oap: OAuth Provider
-	SessionID     string         `json:"sid,omitempty"`
-	Sign          string         `json:"sig,omitempty"`
-	SignAlg       string         `json:"sal,omitempty"`
 }

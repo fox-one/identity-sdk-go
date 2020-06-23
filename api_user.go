@@ -26,8 +26,8 @@ func NewUserRequestJwt(token, serverURL string) *UserRequest {
 }
 
 // GetMe GetMe
-func (r UserRequest) GetMe(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*UserAuthsResponse, error) {
-	var res UserAuthsResponse
+func (r UserRequest) GetMe(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, error) {
+	var res User
 
 	var expand = make([]string, 0)
 	if profile {

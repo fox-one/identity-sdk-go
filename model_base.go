@@ -15,6 +15,11 @@ type AppError struct {
 	ErrorMsg  string `json:"description"`
 }
 
+// Error Error
+func (err *AppError) Error() string {
+	return err.ErrorMsg
+}
+
 // NewAppError NewAppError
 func NewAppError(msg string) *AppError {
 	return &AppError{

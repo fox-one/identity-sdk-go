@@ -16,12 +16,12 @@ type UserRequest struct {
 
 // NewUserRequestJwt NewUserRequestJwt
 func NewUserRequestJwt(token, serverURL string) *UserRequest {
-	id := &UserRequest{
+	userReq := &UserRequest{
 		Authorization: fmt.Sprintf("Bearer %s", token),
 		ServerURL:     serverURL,
 	}
 
-	return id
+	return userReq
 }
 
 // GetMe GetMe

@@ -7,7 +7,7 @@ import (
 )
 
 // GetAllUsers GetAllUsers
-func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, *AppError) {
+func (ir AppRequest) GetAllUsers(ctx context.Context) ([]*User, *AppError) {
 	var users []*User
 
 	if err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/users", ir.ServerURL), nil, &users); err != nil {
@@ -18,7 +18,7 @@ func (ir IDRequest) GetAllUsers(ctx context.Context) ([]*User, *AppError) {
 }
 
 // GetUser GetUser
-func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
+func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
 	var resp User
 
 	var expand = make([]string, 0)
@@ -42,7 +42,7 @@ func (ir IDRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAu
 }
 
 // CreateUser CreateUser
-func (ir IDRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, *AppError) {
+func (ir AppRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, *AppError) {
 	var user User
 
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/users"), req, &user); err != nil {

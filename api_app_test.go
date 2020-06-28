@@ -9,7 +9,7 @@ package identity
 //
 //func TestIDRUsers(t *testing.T) {
 //
-//	idq := &IDRequest{
+//	idq := &AppRequest{
 //		AuthKey:    "",
 //		AuthSecret: "",
 //		ServerURL:  "http://47.103.148.221:8050",

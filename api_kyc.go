@@ -6,7 +6,7 @@ import (
 )
 
 // GetHHBizToken GetHHBizToken
-func (ir IDRequest) GetHHBizToken(ctx context.Context, userID uint64, returnURL string) (string, *AppError) {
+func (ir AppRequest) GetHHBizToken(ctx context.Context, userID uint64, returnURL string) (string, *AppError) {
 	var result map[string]interface{}
 
 	if err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s%s?user_id=%v&return_url=%s", ir.ServerURL, "/v1/kyc/hh/faceid/token", userID, returnURL), nil, &result); err != nil {
@@ -17,7 +17,7 @@ func (ir IDRequest) GetHHBizToken(ctx context.Context, userID uint64, returnURL 
 }
 
 // GetZDBizToken GetZDBizToken
-func (ir IDRequest) GetZDBizToken(ctx context.Context, userID uint64, returnURL string) (string, *AppError) {
+func (ir AppRequest) GetZDBizToken(ctx context.Context, userID uint64, returnURL string) (string, *AppError) {
 	var result map[string]interface{}
 
 	if err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s%s?user_id=%v&return_url=%s", ir.ServerURL, "/v1/kyc/zd/faceid/token", userID, returnURL), nil, &result); err != nil {

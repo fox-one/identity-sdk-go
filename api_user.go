@@ -25,7 +25,7 @@ func NewUserRequestJwt(token, serverURL string) *UserRequest {
 }
 
 // GetMe GetMe
-func (r UserRequest) GetMe(ctx context.Context, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
+func (r UserRequest) GetUser(ctx context.Context, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
 	var res User
 
 	var expand = make([]string, 0)

@@ -30,16 +30,45 @@ type AuthObject struct {
 	FoxAuth   *FoxAuth   `json:"foxone,omitempty"`
 }
 
+// ================ Mixin ================== //
+
+// MixinCredential MixinCredential
+type MixinCredential struct {
+	Type  MixinCredentialTypeEnum `json:"type,omitempty"`
+	EdKey *MixinEdkeyCredential   `json:"edkey,omitempty"`
+	Token *MixinTokenCredential   `json:"token,omitempty"`
+}
+
+// MixinTokenCredential MixinCredential
+type MixinTokenCredential struct {
+	Type        MixinCredentialTypeEnum `json:"type"`
+	AccessToken string                  `json:"access_token,omitempty"`
+	Scope       string                  `json:"scope,omitempty"`
+}
+
+// MixinEdkeyCredential MixinCredential
+type MixinEdkeyCredential struct {
+	Type           MixinCredentialTypeEnum `json:"type"`
+	EdPrivKey      string                  `json:"ed_priv_key"`
+	EdServerPubKey string                  `json:"ed_server_pub_key"`
+	ClientID       string                  `json:"client_id"`
+	AuthID         string                  `json:"auth_id"`
+	Scope          string                  `json:"scope"`
+}
+
 // MixinAuth MixinAuth
 type MixinAuth struct {
-	UserID     uint64      `json:"user_id"`
-	Provider   string      `json:"provider"`
-	OauthID    string      `json:"oauth_id"`
-	MixinID    string      `json:"mixin_id"`
-	Credential interface{} `json:"credential"`
-	CreatedAt  time.Time   `json:"created_at"`
-	UpdatedAt  time.Time   `json:"updated_at"`
+	UserID     uint64           `json:"user_id"`
+	AppID      uint32           `json:"app_id"`
+	Provider   string           `json:"provider"`
+	OauthID    string           `json:"oauth_id"`
+	MixinID    string           `json:"mixin_id"`
+	Credential *MixinCredential `json:"credential"`
+	CreatedAt  time.Time        `json:"created_at"`
+	UpdatedAt  time.Time        `json:"updated_at"`
 }
+
+// ================ Fox ================== //
 
 // FoxAuth FoxAuth
 type FoxAuth struct {
@@ -58,23 +87,6 @@ type FoxoneCredential struct {
 	Scope        string `json:"scope"`
 	ExpiresIn    int    `json:"expires_in,omitempty"`
 	RefreshToken string `json:"refresh_token,omitempty"`
-}
-
-// MixinTokenCredential MixinCredential
-type MixinTokenCredential struct {
-	Type        MixinCredentialTypeEnum `json:"type"`
-	AccessToken string                  `json:"access_token"`
-	Scope       string                  `json:"scope"`
-}
-
-// MixinEdkeyCredential MixinCredential
-type MixinEdkeyCredential struct {
-	Type           MixinCredentialTypeEnum `json:"type"`
-	EdPrivKey      string                  `json:"ed_priv_key"`
-	EdServerPubKey string                  `json:"ed_server_pub_key"`
-	ClientID       string                  `json:"client_id"`
-	AuthID         string                  `json:"auth_id"`
-	Scope          string                  `json:"scope"`
 }
 
 // ================ 枚举 ================== //
@@ -113,8 +125,6 @@ const (
 	AuthProviderTypeEnumWechat AuthProviderTypeEnum = "wechat"
 	// AuthProviderTypeEnumAlipay alipay
 	AuthProviderTypeEnumAlipay AuthProviderTypeEnum = "alipay"
-	// AuthProviderTypeEnumUnkonwn other
-	AuthProviderTypeEnumUnkonwn AuthProviderTypeEnum = "unkonwn"
 )
 
 func (e AuthProviderTypeEnum) String() string {
@@ -128,7 +138,7 @@ func (e AuthProviderTypeEnum) String() string {
 	case AuthProviderTypeEnumAlipay:
 		return "alipay"
 	default:
-		return "unkonwn"
+		return ""
 	}
 }
 
@@ -157,7 +167,7 @@ func (e AuthTypeEnum) String() string {
 	case AuthTypeEnumSystem:
 		return "system"
 	default:
-		return "unkonwn"
+		return ""
 	}
 }
 
@@ -190,6 +200,33 @@ func (e AuthSchemeEnum) String() string {
 	case AuthSchemeEnumJWTES:
 		return "jwtes"
 	default:
-		return "unkonwn"
+		return ""
 	}
+}
+
+// ================ 这两个是给客户端进行输入时的序列化用的 ================  //
+
+// NewMixinTokenCredential NewMixinTokenCredentialReq
+func NewMixinTokenCredential(accessToken, scope string) *MixinTokenCredential {
+	req := &MixinTokenCredential{
+		Type:        MixinCredentialTypeEnumToken,
+		AccessToken: accessToken,
+		Scope:       scope,
+	}
+
+	return req
+}
+
+// NewMixinEdkeyCredentialReq NewMixinEdkeyCredentialReq
+func NewMixinEdkeyCredentialReq(edPrivKey, edServerPubKey, clientID, authID, scope string) *MixinEdkeyCredential {
+	req := &MixinEdkeyCredential{
+		Type:           MixinCredentialTypeEnumToken,
+		EdPrivKey:      edPrivKey,
+		EdServerPubKey: edServerPubKey,
+		ClientID:       clientID,
+		AuthID:         authID,
+		Scope:          scope,
+	}
+
+	return req
 }

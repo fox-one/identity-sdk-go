@@ -24,7 +24,7 @@ func NewUserRequestJwt(token, serverURL string) *UserRequest {
 	return userReq
 }
 
-// GetMe GetMe
+// GetUser GetUser
 func (r UserRequest) GetUser(ctx context.Context, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
 	var res User
 

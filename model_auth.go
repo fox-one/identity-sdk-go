@@ -32,13 +32,13 @@ type AuthObject struct {
 
 // MixinAuth MixinAuth
 type MixinAuth struct {
-	UserID     uint64           `json:"user_id"`
-	Provider   string           `json:"provider"`
-	OauthID    string           `json:"oauth_id"`
-	MixinID    string           `json:"mixin_id"`
-	Credential *MixinCredential `json:"credential"`
-	CreatedAt  time.Time        `json:"created_at"`
-	UpdatedAt  time.Time        `json:"updated_at"`
+	UserID     uint64      `json:"user_id"`
+	Provider   string      `json:"provider"`
+	OauthID    string      `json:"oauth_id"`
+	MixinID    string      `json:"mixin_id"`
+	Credential interface{} `json:"credential"`
+	CreatedAt  time.Time   `json:"created_at"`
+	UpdatedAt  time.Time   `json:"updated_at"`
 }
 
 // FoxAuth FoxAuth
@@ -60,14 +60,46 @@ type FoxoneCredential struct {
 	RefreshToken string `json:"refresh_token,omitempty"`
 }
 
-// MixinCredential MixinCredential
-type MixinCredential struct {
-	AccessToken string `json:"access_token"`
-	Scope       string `json:"scope"`
+// MixinTokenCredential MixinCredential
+type MixinTokenCredential struct {
+	Type        MixinCredentialTypeEnum `json:"type"`
+	AccessToken string                  `json:"access_token"`
+	Scope       string                  `json:"scope"`
+}
+
+// MixinEdkeyCredential MixinCredential
+type MixinEdkeyCredential struct {
+	Type           MixinCredentialTypeEnum `json:"type"`
+	EdPrivKey      string                  `json:"ed_priv_key"`
+	EdServerPubKey string                  `json:"ed_server_pub_key"`
+	ClientID       string                  `json:"client_id"`
+	AuthID         string                  `json:"auth_id"`
+	Scope          string                  `json:"scope"`
 }
 
 // ================ 枚举 ================== //
 // ================ 枚举 ================== //
+
+// MixinCredentialTypeEnum 枚举
+type MixinCredentialTypeEnum string
+
+const (
+	// MixinCredentialTypeEnumEdkey edkey
+	MixinCredentialTypeEnumEdkey MixinCredentialTypeEnum = "edkey"
+	// MixinCredentialTypeEnumToken token
+	MixinCredentialTypeEnumToken MixinCredentialTypeEnum = "token"
+)
+
+func (e MixinCredentialTypeEnum) String() string {
+	switch e {
+	case MixinCredentialTypeEnumEdkey:
+		return "edkey"
+	case MixinCredentialTypeEnumToken:
+		return "token"
+	default:
+		return ""
+	}
+}
 
 // AuthProviderTypeEnum 枚举
 type AuthProviderTypeEnum string

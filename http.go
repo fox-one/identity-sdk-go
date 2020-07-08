@@ -50,12 +50,12 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 	}
 
 	// 检查requestid
-	sourceReqID := request.Header.Get(RequestIDKey)
-	returnReqID := r.Header().Get(RequestIDKey)
+	//sourceReqID := request.Header.Get(RequestIDKey)
+	//returnReqID := r.Header().Get(RequestIDKey)
 
-	if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
-		return NewAppError("RequestID Not Match")
-	}
+	//if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
+	//	return NewAppError("RequestID Not Match")
+	//}
 
 	fmt.Printf("resp.status:%s", r.Status())
 

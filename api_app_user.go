@@ -2,6 +2,7 @@ package identity
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -35,6 +36,45 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 	url := fmt.Sprintf("%s/v1/users/%v/?expand=%s", ir.ServerURL, userID, strings.Join(expand, ","))
 
 	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// GetUser GetUser
+func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber string) (*User, *AppError) {
+	var resp BasePageResponse
+
+	url := fmt.Sprintf("%s/v1/users?phone_code=%s&phone_number=%s&limit=1", ir.ServerURL, phoneCode, phoneNumber)
+
+	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
+		return nil, err
+	}
+
+	if len(resp.Items) > 0 {
+		user := new(User)
+		bt, err := json.Marshal(resp.Items[0])
+		if err != nil {
+		}
+
+		err2 := json.Unmarshal(bt, user)
+		if err2 != nil {
+		}
+
+		return user, nil
+	}
+
+	return nil, nil
+}
+
+// VerifyUserPassword VerifyUserPassword
+func (ir AppRequest) VerifyUserPassword(ctx context.Context, userID uint64, password string) (*User, *AppError) {
+	var resp User
+
+	url := fmt.Sprintf("%s/v1/users/%v/password_verify", ir.ServerURL, userID)
+
+	if err := Execute(ir.getRequest(ctx), "POST", url, map[string]string{"password": password}, &resp); err != nil {
 		return nil, err
 	}
 

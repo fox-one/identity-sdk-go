@@ -207,7 +207,7 @@ func NewMixinTokenCredential(accessToken, scope string) *MixinCredential {
 // NewMixinEdkeyCredential NewMixinEdkeyCredential
 func NewMixinEdkeyCredential(edPrivKey, edServerPubKey, clientID, authID, scope string) *MixinCredential {
 	req := &MixinCredential{
-		Type:           MixinCredentialTypeEnumToken,
+		Type:           MixinCredentialTypeEnumEdkey,
 		EdPrivKey:      edPrivKey,
 		EdServerPubKey: edServerPubKey,
 		ClientID:       clientID,

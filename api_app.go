@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+
 	resty "github.com/go-resty/resty/v2"
 )
 
@@ -30,7 +31,7 @@ func NewAppRequestBasic(authKey, authSecret, serverURL string) *AppRequest {
 func NewAppRequestJwt(token, serverURL string) *AppRequest {
 	id := &AppRequest{
 		AuthValue: fmt.Sprintf("Bearer %s", token),
-		ServerURL:     serverURL,
+		ServerURL: serverURL,
 	}
 
 	return id
@@ -50,8 +51,6 @@ func (ir AppRequest) GetApp(ctx context.Context) (*Application, *AppError) {
 	return &res, nil
 }
 
-
-
 // ============ private ============= //
 // ============ private ============= //
 
@@ -60,4 +59,3 @@ func (ir AppRequest) getRequest(ctx context.Context) *resty.Request {
 		SetHeader("Authorization", ir.AuthValue).
 		SetHeader(RequestIDKey, GenRequestID(ctx))
 }
-

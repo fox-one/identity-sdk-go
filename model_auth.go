@@ -34,26 +34,13 @@ type AuthObject struct {
 
 // MixinCredential MixinCredential
 type MixinCredential struct {
-	Type  MixinCredentialTypeEnum `json:"type,omitempty"`
-	EdKey *MixinEdkeyCredential   `json:"edkey,omitempty"`
-	Token *MixinTokenCredential   `json:"token,omitempty"`
-}
-
-// MixinTokenCredential MixinCredential
-type MixinTokenCredential struct {
-	Type        MixinCredentialTypeEnum `json:"type"`
-	AccessToken string                  `json:"access_token,omitempty"`
-	Scope       string                  `json:"scope,omitempty"`
-}
-
-// MixinEdkeyCredential MixinCredential
-type MixinEdkeyCredential struct {
-	Type           MixinCredentialTypeEnum `json:"type"`
-	EdPrivKey      string                  `json:"ed_priv_key"`
-	EdServerPubKey string                  `json:"ed_server_pub_key"`
-	ClientID       string                  `json:"client_id"`
-	AuthID         string                  `json:"auth_id"`
-	Scope          string                  `json:"scope"`
+	Type           MixinCredentialTypeEnum `json:"type,omitempty"`
+	EdPrivKey      string                  `json:"ed_priv_key,omitempty"`       // edkey
+	EdServerPubKey string                  `json:"ed_server_pub_key,omitempty"` // edkey
+	ClientID       string                  `json:"client_id,omitempty"`         // edkey
+	AuthID         string                  `json:"auth_id,omitempty"`           // edkey
+	Scope          string                  `json:"scope,omitempty"`             // token & edkey
+	AccessToken    string                  `json:"access_token,omitempty"`      // token
 }
 
 // MixinAuth MixinAuth

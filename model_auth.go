@@ -194,8 +194,8 @@ func (e AuthSchemeEnum) String() string {
 // ================ 这两个是给客户端进行输入时的序列化用的 ================  //
 
 // NewMixinTokenCredential NewMixinTokenCredentialReq
-func NewMixinTokenCredential(accessToken, scope string) *MixinTokenCredential {
-	req := &MixinTokenCredential{
+func NewMixinTokenCredential(accessToken, scope string) *MixinCredential {
+	req := &MixinCredential{
 		Type:        MixinCredentialTypeEnumToken,
 		AccessToken: accessToken,
 		Scope:       scope,
@@ -204,9 +204,9 @@ func NewMixinTokenCredential(accessToken, scope string) *MixinTokenCredential {
 	return req
 }
 
-// NewMixinEdkeyCredentialReq NewMixinEdkeyCredentialReq
-func NewMixinEdkeyCredentialReq(edPrivKey, edServerPubKey, clientID, authID, scope string) *MixinEdkeyCredential {
-	req := &MixinEdkeyCredential{
+// NewMixinEdkeyCredential NewMixinEdkeyCredential
+func NewMixinEdkeyCredential(edPrivKey, edServerPubKey, clientID, authID, scope string) *MixinCredential {
+	req := &MixinCredential{
 		Type:           MixinCredentialTypeEnumToken,
 		EdPrivKey:      edPrivKey,
 		EdServerPubKey: edServerPubKey,

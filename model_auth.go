@@ -2,6 +2,8 @@ package identity
 
 import (
 	"time"
+
+	"github.com/fox-one/mixin-sdk"
 )
 
 // Authorization Authorization
@@ -34,13 +36,9 @@ type AuthObject struct {
 
 // MixinCredential MixinCredential
 type MixinCredential struct {
-	Type           MixinCredentialTypeEnum `json:"type,omitempty"`
-	EdPrivKey      string                  `json:"ed_priv_key,omitempty"`       // edkey
-	EdServerPubKey string                  `json:"ed_server_pub_key,omitempty"` // edkey
-	ClientID       string                  `json:"client_id,omitempty"`         // edkey
-	AuthID         string                  `json:"auth_id,omitempty"`           // edkey
-	Scope          string                  `json:"scope,omitempty"`             // token & edkey
-	AccessToken    string                  `json:"access_token,omitempty"`      // token
+	mixin.EdOToken
+	Type        MixinCredentialTypeEnum `json:"type,omitempty"`
+	AccessToken string                  `json:"access_token,omitempty"` // token
 }
 
 // MixinAuth MixinAuth
@@ -198,21 +196,17 @@ func NewMixinTokenCredential(accessToken, scope string) *MixinCredential {
 	req := &MixinCredential{
 		Type:        MixinCredentialTypeEnumToken,
 		AccessToken: accessToken,
-		Scope:       scope,
+		EdOToken:    mixin.EdOToken{Scope: scope},
 	}
 
 	return req
 }
 
 // NewMixinEdkeyCredential NewMixinEdkeyCredential
-func NewMixinEdkeyCredential(edPrivKey, edServerPubKey, clientID, authID, scope string) *MixinCredential {
+func NewMixinEdkeyCredential(edoToken *mixin.EdOToken) *MixinCredential {
 	req := &MixinCredential{
-		Type:           MixinCredentialTypeEnumEdkey,
-		EdPrivKey:      edPrivKey,
-		EdServerPubKey: edServerPubKey,
-		ClientID:       clientID,
-		AuthID:         authID,
-		Scope:          scope,
+		Type:     MixinCredentialTypeEnumEdkey,
+		EdOToken: *edoToken,
 	}
 
 	return req

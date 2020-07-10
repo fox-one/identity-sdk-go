@@ -43,21 +43,19 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 		request = request.SetBody(body)
 	}
 
-	fmt.Printf("request:%v", request)
 	r, err := request.Execute(strings.ToUpper(method), url)
 	if err != nil {
 		return NewAppError(err.Error())
 	}
 
-	// 检查requestid
-	//sourceReqID := request.Header.Get(RequestIDKey)
-	//returnReqID := r.Header().Get(RequestIDKey)
+	//检查requestid
+	sourceReqID := request.Header.Get(RequestIDKey)
+	returnReqID := r.Header().Get(RequestIDKey)
 
-	//if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
-	//	return NewAppError("RequestID Not Match")
-	//}
+	if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
+		return NewAppError("RequestID Not Match")
+	}
 
-	fmt.Printf("resp.status:%s", r.Status())
 
 	return ParseResponse(r, resp)
 }
@@ -68,7 +66,7 @@ func ParseResponse(r *resty.Response, obj interface{}) *AppError {
 		if obj != nil {
 			e := json.Unmarshal(r.Body(), obj)
 			if e != nil {
-				fmt.Printf("parseResponse:%s", e.Error())
+				fmt.Println("parseResponse:%s", e.Error())
 				return NewAppError(e.Error())
 			}
 			return nil

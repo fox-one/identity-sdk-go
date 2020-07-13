@@ -50,6 +50,7 @@ func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber 
 	url := fmt.Sprintf("%s/v1/users?phone_code=%s&phone_number=%s&limit=1", ir.ServerURL, phoneCode, phoneNumber)
 
 	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
+		fmt.Println("=======err=====", err)
 		return nil, err
 	}
 

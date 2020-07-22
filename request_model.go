@@ -96,3 +96,20 @@ type TokenCreateRequest struct {
 	// ExpriedAt
 	Duration time.Duration `json:"duration"` //  有效时长
 }
+
+// PhoneCodeVerifyRequest PhoneCodeVerifyRequest
+type PhoneCodeVerifyRequest struct {
+	PhoneCode   string `json:"phone_code"`
+	PhoneNumber string `json:"phone_number"`
+	Code        string `json:"code"`
+}
+
+// AuthBindingRequest  auth 绑定
+type AuthBindingRequest struct {
+	UserID     uint64               `json:"user_id"`
+	Provider   AuthProviderTypeEnum `json:"provider"`
+	OauthID    string               `json:"oauth_id" `
+	UnionID    string               `json:"union_id" `
+	Credential string               `json:"credential"`
+	AppUserID  string               `json:"app_user_id" "`
+}

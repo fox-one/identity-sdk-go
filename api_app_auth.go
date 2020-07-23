@@ -69,7 +69,11 @@ func (ir AppRequest) GenMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVeri
 		return "", err
 	}
 
-	return result["url"].(string), nil
+	if result["code"] == nil {
+		return "", NewAppError("result error!")
+	}
+
+	return result["code"].(string), nil
 }
 
 // VerifyMfaPhoneCode VerifyMfaPhoneCode

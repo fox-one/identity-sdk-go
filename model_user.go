@@ -13,7 +13,7 @@ type User struct {
 	Auths       *AuthObject `mapstructure:"authorizations" json:"authorizations,omitempty"`
 	Profile     *Profile    `mapstructure:"profile" json:"profile,omitempty"`
 	Status      string      `mapstructure:"status" json:"status"`
-	CreatedAt   string      `mapstructure:"created_at" json:"created_at"`
+	CreatedAt   time.Time   `mapstructure:"created_at" json:"created_at"`
 }
 
 // Profile profile

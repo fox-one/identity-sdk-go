@@ -2,10 +2,9 @@ package identity
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
-
-	mapstructure "github.com/mitchellh/mapstructure"
 )
 
 // GetAllUsers GetAllUsers
@@ -50,19 +49,20 @@ func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber 
 	url := fmt.Sprintf("%s/v1/users?phone_code=%s&phone_number=%s&limit=1", ir.ServerURL, phoneCode, phoneNumber)
 
 	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
-		fmt.Println("=======err=====", err)
 		return nil, err
 	}
 
 	if len(resp.Items) > 0 {
+		userBt, err := json.Marshal(resp.Items[0])
+		if err!=nil {
+			return nil, NewAppError(err.Error())
+		}
+
 		user := new(User)
-		fmt.Println("=======item0=====", resp.Items[0])
-		err2 := mapstructure.Decode(resp.Items[0], user)
+		err2 := json.Unmarshal(userBt, user)
 		if err2 != nil {
-			fmt.Println("=======err2=====", err2)
 			return nil, NewAppError(err2.Error())
 		}
-		fmt.Println("=======user=====", user)
 		return user, nil
 	}
 

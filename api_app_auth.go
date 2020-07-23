@@ -62,7 +62,6 @@ func (ir AppRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProvider
 	return &auth, nil
 }
 
-
 // GenMfaPhoneCode GenMfaPhoneCode
 func (ir AppRequest) GenMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVerifyRequest) (string, *AppError) {
 	var result map[string]interface{}
@@ -82,7 +81,6 @@ func (ir AppRequest) VerifyMfaPhoneCode(ctx context.Context, authReq *PhoneCodeV
 
 	return &user, nil
 }
-
 
 // BindAuth BindAuth
 func (ir AppRequest) BindAuth(ctx context.Context, req AuthBindingRequest) (*Authorization, *AppError) {

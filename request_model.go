@@ -106,10 +106,11 @@ type PhoneCodeVerifyRequest struct {
 
 // AuthBindingRequest  auth 绑定
 type AuthBindingRequest struct {
-	UserID     uint64               `json:"user_id"`
-	Provider   AuthProviderTypeEnum `json:"provider"`
-	OauthID    string               `json:"oauth_id" `
-	UnionID    string               `json:"union_id" `
-	Credential string               `json:"credential"`
-	AppUserID  string               `json:"app_user_id" "`
+	UserID      uint64               `json:"user_id"`
+	Provider    AuthProviderTypeEnum `json:"provider"`
+	OauthID     string               `json:"oauth_id" `
+	UnionID     string               `json:"union_id" `
+	Credential  string               `json:"credential"`
+	AppUserName string               `json:"app_user_name"`
+	AppUserID   string               `json:"app_user_id" "`
 }

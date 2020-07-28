@@ -42,7 +42,7 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 	return &resp, nil
 }
 
-// GetUser GetUser
+// GetUserByPhone GetUser
 func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber string) (*User, *AppError) {
 	var resp BasePageResponse
 
@@ -54,7 +54,7 @@ func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber 
 
 	if len(resp.Items) > 0 {
 		userBt, err := json.Marshal(resp.Items[0])
-		if err!=nil {
+		if err != nil {
 			return nil, NewAppError(err.Error())
 		}
 

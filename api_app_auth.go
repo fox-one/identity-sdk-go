@@ -96,7 +96,7 @@ func (ir AppRequest) BindAuth(ctx context.Context, req AuthBindingRequest) (*Aut
 	return &auth, nil
 }
 
-// BindAuth BindAuth
+// UnbindAuth BindAuth
 func (ir AppRequest) UnbindAuth(ctx context.Context, userID uint64, provider AuthProviderTypeEnum) *AppError {
 	var result map[string]interface{}
 	if err := Execute(ir.getRequest(ctx), "DELETE", fmt.Sprintf("%s/v1/app/users/%v/auths/%s/bind", ir.ServerURL, userID, provider), nil, &result); err != nil {

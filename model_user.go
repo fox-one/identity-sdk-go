@@ -10,6 +10,7 @@ type User struct {
 	PhoneNumber string      `mapstructure:"phone_number" json:"phone_number"`
 	Email       string      `mapstructure:"email" json:"email"`
 	Description string      `mapstructure:"description" json:"description"`
+	Attributes  string      `mapstructure:"attributes" json:"attributes"`
 	Auths       *AuthObject `mapstructure:"authorizations" json:"authorizations,omitempty"`
 	Profile     *Profile    `mapstructure:"profile" json:"profile,omitempty"`
 	Status      string      `mapstructure:"status" json:"status"`

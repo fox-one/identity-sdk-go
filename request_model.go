@@ -112,5 +112,5 @@ type AuthBindingRequest struct {
 	UnionID     string               `json:"union_id" `
 	Credential  string               `json:"credential"`
 	AppUserName string               `json:"app_user_name"`
-	AppUserID   string               `json:"app_user_id" "`
+	AppUserID   string               `json:"app_user_id"`
 }

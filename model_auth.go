@@ -48,6 +48,7 @@ type MixinAuth struct {
 	Provider   string           `json:"provider"`
 	OauthID    string           `json:"oauth_id"`
 	MixinID    string           `json:"mixin_id"`
+	UserName   string           `json:"user_name"`
 	Credential *MixinCredential `json:"credential"`
 	CreatedAt  time.Time        `json:"created_at"`
 	UpdatedAt  time.Time        `json:"updated_at"`
@@ -61,6 +62,7 @@ type FoxAuth struct {
 	Provider   string            `json:"provider"`
 	OauthID    string            `json:"oauth_id"`
 	FoxID      string            `json:"foxone_id"`
+	UserName   string            `json:"user_name"`
 	Credential *FoxoneCredential `json:"credential"`
 	CreatedAt  time.Time         `json:"created_at"`
 	UpdatedAt  time.Time         `json:"updated_at"`

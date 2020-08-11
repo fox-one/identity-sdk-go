@@ -14,6 +14,19 @@ type CreateUserReq struct {
 	Description string `json:"description"`
 }
 
+// UserModifyReq UserModifyReq
+type UserModifyReq struct {
+	UserID      uint64 `json:"user_id"`
+	UserName    string `json:"username"`
+	Type        string `json:"type"`
+	PhoneCode   string `json:"phone_code"`
+	PhoneNumber string `json:"phone_number"`
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	AvatarURL   string `json:"avatar_url"`
+	Description string `json:"description"`
+}
+
 // MixinAuthReq MixinAuthReq
 type MixinAuthReq struct {
 	UserName    string `json:"username"`

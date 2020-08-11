@@ -92,3 +92,29 @@ func (ir AppRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User,
 
 	return &user, nil
 }
+
+// ChangePassword ChangePassword
+func (ir AppRequest) ChangePassword(ctx context.Context, req *UserModifyReq) (*User, *AppError) {
+	var user User
+
+	url := fmt.Sprintf("%s/v1/users/%v/password", ir.ServerURL, req.UserID)
+
+	if err := Execute(ir.getRequest(ctx), "PUT", url, req, &user); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+// ChangePhone ChangePhone
+func (ir AppRequest) ChangePhone(ctx context.Context, req *UserModifyReq) (*User, *AppError) {
+	var user User
+
+	url := fmt.Sprintf("%s/v1/users/%v/phone", ir.ServerURL, req)
+
+	if err := Execute(ir.getRequest(ctx), "PUT", url, req, &user); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}

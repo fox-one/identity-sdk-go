@@ -110,7 +110,7 @@ func (ir AppRequest) ChangePassword(ctx context.Context, req *UserModifyReq) (*U
 func (ir AppRequest) ChangePhone(ctx context.Context, req *UserModifyReq) (*User, *AppError) {
 	var user User
 
-	url := fmt.Sprintf("%s/v1/users/%v/phone", ir.ServerURL, req)
+	url := fmt.Sprintf("%s/v1/users/%d/phone", ir.ServerURL, req.UserID)
 
 	if err := Execute(ir.getRequest(ctx), "PUT", url, req, &user); err != nil {
 		return nil, err

@@ -32,6 +32,29 @@ type AuthObject struct {
 	FoxAuth   *FoxAuth   `json:"foxone,omitempty"`
 }
 
+// ================ Wechat ================== //
+
+// WechatCredential WechatCredential
+type WechatCredential struct {
+	AccessToken  string `json:"access_token"`
+	Scope        string `json:"scope"`
+	ExpiresIn    int    `json:"expires_in,omitempty"`
+	RefreshToken string `json:"refresh_token,omitempty"`
+}
+
+// WechatAuth WechatAuth
+type WechatAuth struct {
+	UserID     uint64            `json:"user_id"`
+	AppID      uint32            `json:"app_id"`
+	Provider   string            `json:"provider"`
+	OauthID    string            `json:"oauth_id"`
+	UnionID    string            `json:"union_id"`
+	UserName   string            `json:"user_name"`
+	Credential *WechatCredential `json:"credential"`
+	CreatedAt  time.Time         `json:"created_at"`
+	UpdatedAt  time.Time         `json:"updated_at"`
+}
+
 // ================ Mixin ================== //
 
 // MixinCredential MixinCredential

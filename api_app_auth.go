@@ -62,6 +62,19 @@ func (ir AppRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProvider
 	return &auth, nil
 }
 
+
+// GetAuthsByOAuthIDs GetAuthsByOAuthIDs
+func (ir AppRequest) GetAuthsByOAuthIDs(ctx context.Context, provider AuthProviderTypeEnum, oauthIDs []string) ([]*Authorization, *AppError) {
+	var auth []*Authorization
+	var url = fmt.Sprintf("%s/v1/app/%s/auths/batch", ir.ServerURL, provider)
+
+	if err := Execute(ir.getRequest(ctx), "POST", url, oauthIDs, &auth); err != nil {
+		return nil, err
+	}
+
+	return auth, nil
+}
+
 // GenMfaPhoneCode GenMfaPhoneCode
 func (ir AppRequest) GenMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVerifyRequest) (string, *AppError) {
 	var result map[string]interface{}

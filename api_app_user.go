@@ -42,6 +42,35 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 	return &resp, nil
 }
 
+// BatchGetUsers BatchGetUsers
+func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profile, mixinAuth, foxAuth bool) ([]*User, *AppError) {
+	var resp []*User
+
+	var expand = make([]string, 0)
+	if profile {
+		expand = append(expand, "profile")
+	}
+	if mixinAuth {
+		expand = append(expand, "authorizations.mixin")
+	}
+	if foxAuth {
+		expand = append(expand, "authorizations.foxone")
+	}
+
+	userIdStr := make([]string, 0)
+	for _, id := range userIDs {
+		userIdStr = append(userIdStr, fmt.Sprintf("%v", id))
+	}
+
+	url := fmt.Sprintf("%s/v1/users?id=%s&expand=%s", ir.ServerURL, strings.Join(userIdStr, ","), strings.Join(expand, ","))
+
+	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 // GetUserByPhone GetUser
 func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber string) (*User, *AppError) {
 	var resp BasePageResponse

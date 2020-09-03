@@ -8,7 +8,7 @@ import (
 // Login Login
 func (ir AppRequest) Login(ctx context.Context, req *LoginRequest) (*User, *AppError) {
 	var user User
-	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s/v1/app/session/lgoin", ir.ServerURL), req, &user); err != nil {
+	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s/v1/app/session/login", ir.ServerURL), req, &user); err != nil {
 		return nil, err
 	}
 

@@ -50,6 +50,20 @@ func (ir AppRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*To
 	return &tokenRes, nil
 }
 
+// GenMfaToken GenMfaToken
+func (ir AppRequest) GenMfaToken(ctx context.Context, userID uint64) (string, *AppError) {
+	var tokenRes struct {
+		MfaToken string `json:"mfa_token"`
+	}
+	var url = fmt.Sprintf("%s/v1/app/users/%v/mfa_tokens", ir.ServerURL, userID)
+
+	if err := Execute(ir.getRequest(ctx), "POST", url, nil, &tokenRes); err != nil {
+		return "", err
+	}
+
+	return tokenRes.MfaToken, nil
+}
+
 // GetAuthByOAuthID GetAuthByOAuthID
 func (ir AppRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProviderTypeEnum, oauthID string) (*Authorization, *AppError) {
 	var auth Authorization
@@ -61,7 +75,6 @@ func (ir AppRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProvider
 
 	return &auth, nil
 }
-
 
 // GetAuthsByOAuthIDs GetAuthsByOAuthIDs
 func (ir AppRequest) GetAuthsByOAuthIDs(ctx context.Context, provider AuthProviderTypeEnum, oauthIDs []string) ([]*Authorization, *AppError) {

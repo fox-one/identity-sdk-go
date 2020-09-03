@@ -155,7 +155,7 @@ func (e LoginTypeEnum) String() string {
 
 // TwoFactorRequest TwoFactorRequest
 type TwoFactorRequest struct {
-	userID   uint64      `json:"user_id"`
+	UserID   uint64      `json:"user_id"`
 	MfaToken string      `json:"authenticity_token"`
 	MfaType  MfaTypeEnum `json:"mfa_type"`
 	Captcha  string      `json:"captcha"`

@@ -60,7 +60,11 @@ type LoginRequest struct {
 	ID          uint64 `json:"id"`
 	PhoneCode   string `json:"phone_code"`
 	PhoneNumber string `json:"phone_number"`
+	Email       string `json:"email"`
 	Password    string `json:"password"`
+
+	LoginType LoginTypeEnum `json:"login_type"`
+	Captcha   string        `json:"captcha"`
 }
 
 // KycSyncRequest KycSyncRequest
@@ -126,4 +130,33 @@ type AuthBindingRequest struct {
 	Credential  string               `json:"credential"`
 	AppUserName string               `json:"app_user_name"`
 	AppUserID   string               `json:"app_user_id"`
+}
+
+type LoginTypeEnum string
+
+const (
+	LoginTypeEnumPassword LoginTypeEnum = "password"
+	LoginTypeEnumPhone    LoginTypeEnum = "phone"
+	LoginTypeEnumEmail    LoginTypeEnum = "email"
+)
+
+func (e LoginTypeEnum) String() string {
+	switch e {
+	case LoginTypeEnumPassword:
+		return "password"
+	case LoginTypeEnumPhone:
+		return "phone"
+	case LoginTypeEnumEmail:
+		return "email"
+	default:
+		return ""
+	}
+}
+
+// TwoFactorRequest TwoFactorRequest
+type TwoFactorRequest struct {
+	userID   uint64      `json:"user_id"`
+	MfaToken string      `json:"authenticity_token"`
+	MfaType  MfaTypeEnum `json:"mfa_type"`
+	Captcha  string      `json:"captcha"`
 }

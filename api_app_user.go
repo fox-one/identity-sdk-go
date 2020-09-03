@@ -147,3 +147,4 @@ func (ir AppRequest) ChangePhone(ctx context.Context, req *UserModifyReq) (*User
 
 	return &user, nil
 }
+

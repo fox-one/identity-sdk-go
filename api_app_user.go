@@ -122,13 +122,26 @@ func (ir AppRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User,
 	return &user, nil
 }
 
-// ChangePassword ChangePassword
-func (ir AppRequest) ChangePassword(ctx context.Context, req *UserModifyReq) (*User, *AppError) {
+// SetPassword SetPassword
+func (ir AppRequest) SetPassword(ctx context.Context, userID uint64, password string) (*User, *AppError) {
 	var user User
 
-	url := fmt.Sprintf("%s/v1/users/%v/password", ir.ServerURL, req.UserID)
+	url := fmt.Sprintf("%s/v1/users/%v/password", ir.ServerURL, userID)
 
-	if err := Execute(ir.getRequest(ctx), "PUT", url, req, &user); err != nil {
+	if err := Execute(ir.getRequest(ctx), "PUT", url, map[string]string{"password": password}, &user); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+// ChangePassword ChangePassword
+func (ir AppRequest) ChangePassword(ctx context.Context, userID uint64, oldPassword, newPassword string) (*User, *AppError) {
+	var user User
+
+	url := fmt.Sprintf("%s/v1/users/%v/password", ir.ServerURL, userID)
+
+	if err := Execute(ir.getRequest(ctx), "PATCH", url, map[string]string{"new_password": newPassword, "old_password": oldPassword}, &user); err != nil {
 		return nil, err
 	}
 
@@ -162,12 +175,12 @@ func (ir AppRequest) UpdateMfa(ctx context.Context, req *MfaCredentialRequest) (
 }
 
 // UpdateMfa UpdateMfa
-func (ir AppRequest) RemoveMfa(ctx context.Context, req *MfaCredentialRequest) (bool, *AppError) {
+func (ir AppRequest) RemoveMfa(ctx context.Context, userID uint64) (bool, *AppError) {
 	var result struct {
 		Success bool `json:"success"`
 	}
 
-	url := fmt.Sprintf("%s/v1/users/%d/mfa/two_factor", ir.ServerURL, req.UserID)
+	url := fmt.Sprintf("%s/v1/users/%d/mfa/two_factor", ir.ServerURL, userID)
 
 	if err := Execute(ir.getRequest(ctx), "DELETE", url, nil, &result); err != nil {
 		return false, err

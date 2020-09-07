@@ -31,8 +31,9 @@ type Profile struct {
 
 // MfaCredentialResponse MfaCredentialResponse
 type MfaCredential struct {
-	Type   MfaTypeEnum `json:"type"`
-	Enable bool        `json:"enable"`
+	Type            MfaTypeEnum `json:"type"`
+	Enable          bool        `json:"enable"`
+	ProvisioningUri string      `json:"provisioning_uri,omitempty"`
 }
 
 type MfaTypeEnum string

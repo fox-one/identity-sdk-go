@@ -148,3 +148,30 @@ func (ir AppRequest) ChangePhone(ctx context.Context, req *UserModifyReq) (*User
 	return &user, nil
 }
 
+// UpdateMfa UpdateMfa
+func (ir AppRequest) UpdateMfa(ctx context.Context, req *MfaCredentialRequest) (*MfaCredential, *AppError) {
+	var resp MfaCredential
+
+	url := fmt.Sprintf("%s/v1/users/%d/mfa/two_factor", ir.ServerURL, req.UserID)
+
+	if err := Execute(ir.getRequest(ctx), "PUT", url, req, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+// UpdateMfa UpdateMfa
+func (ir AppRequest) RemoveMfa(ctx context.Context, req *MfaCredentialRequest) (bool, *AppError) {
+	var result struct {
+		Success bool `json:"success"`
+	}
+
+	url := fmt.Sprintf("%s/v1/users/%d/mfa/two_factor", ir.ServerURL, req.UserID)
+
+	if err := Execute(ir.getRequest(ctx), "DELETE", url, nil, &result); err != nil {
+		return false, err
+	}
+
+	return result.Success, nil
+}

@@ -160,3 +160,12 @@ type TwoFactorRequest struct {
 	MfaType  MfaTypeEnum `json:"mfa_type"`
 	Captcha  string      `json:"captcha"`
 }
+
+// MfaCredentialRequest MfaCredentialRequest
+type MfaCredentialRequest struct {
+
+	UserID      uint64            `json:"user_id"`
+	MfaType     MfaTypeEnum 	  `json:"mfa_type"`
+	AccountName string            `json:"account_name"`
+	IssuerName  string            `json:"issuer_name"`
+}

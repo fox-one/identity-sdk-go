@@ -116,9 +116,10 @@ type TokenCreateRequest struct {
 
 // PhoneCodeVerifyRequest PhoneCodeVerifyRequest
 type PhoneCodeVerifyRequest struct {
-	PhoneCode   string `json:"phone_code"`
-	PhoneNumber string `json:"phone_number"`
-	Code        string `json:"code"`
+	PhoneCode   string          `json:"phone_code"`
+	PhoneNumber string          `json:"phone_number"`
+	CaptchaType CaptchaTypeEnum `json:"captcha_type"`
+	Code        string          `json:"code"`
 }
 
 // AuthBindingRequest  auth 绑定
@@ -163,9 +164,26 @@ type TwoFactorRequest struct {
 
 // MfaCredentialRequest MfaCredentialRequest
 type MfaCredentialRequest struct {
+	UserID      uint64      `json:"user_id"`
+	MfaType     MfaTypeEnum `json:"mfa_type"`
+	AccountName string      `json:"account_name"`
+	IssuerName  string      `json:"issuer_name"`
+}
 
-	UserID      uint64            `json:"user_id"`
-	MfaType     MfaTypeEnum 	  `json:"mfa_type"`
-	AccountName string            `json:"account_name"`
-	IssuerName  string            `json:"issuer_name"`
+// CaptchaTypeEnum CaptchaTypeEnum
+type CaptchaTypeEnum string
+
+const (
+	// CaptchaTypeEnumLogin offer
+	CaptchaTypeEnumLogin     CaptchaTypeEnum = "login"
+	CaptchaTypeEnumTwoFactor CaptchaTypeEnum = "two-factor"
+)
+
+func (e CaptchaTypeEnum) String() string {
+	switch e {
+	case CaptchaTypeEnumLogin:
+		return "login"
+	default:
+		return ""
+	}
 }

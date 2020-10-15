@@ -55,6 +55,18 @@ type FoxoneAuthReq struct {
 	AvatarURL   string `json:"avatar_url"`
 }
 
+// WechatAuthReq WechatAuthReq
+type WechatAuthReq struct {
+	UserName    string `json:"username"`
+	PhoneCode   string `json:"phone_code" binding:"required,min=1"`
+	PhoneNumber string `json:"phone_number" binding:"required,min=4"`
+	AvatarURL   string `json:"avatar_url"`
+	Description string `json:"description"`
+	OauthID     string `json:"oauth_id" binding:"required,min=4"`
+	UnionID     string `json:"union_id"`
+	Credential  string `json:"credential"`
+}
+
 // LoginRequest LoginRequest
 type LoginRequest struct {
 	ID          uint64 `json:"id"`
@@ -133,6 +145,13 @@ type AuthBindingRequest struct {
 	AppUserID   string               `json:"app_user_id"`
 }
 
+type PermissionRequest struct {
+	Object  string `json:"obj"`
+	Action  string `json:"act"`
+	Subject string `json:"sub"`
+	Domain  string `json:"dom"`
+}
+
 type LoginTypeEnum string
 
 const (
@@ -176,6 +195,7 @@ type CaptchaTypeEnum string
 const (
 	// CaptchaTypeEnumLogin offer
 	CaptchaTypeEnumLogin     CaptchaTypeEnum = "login"
+	CaptchaTypeEnumReg       CaptchaTypeEnum = "reg"
 	CaptchaTypeEnumTwoFactor CaptchaTypeEnum = "two-factor"
 )
 
@@ -183,6 +203,10 @@ func (e CaptchaTypeEnum) String() string {
 	switch e {
 	case CaptchaTypeEnumLogin:
 		return "login"
+	case CaptchaTypeEnumReg:
+		return "reg"
+	case CaptchaTypeEnumTwoFactor:
+		return "two-factor"
 	default:
 		return ""
 	}

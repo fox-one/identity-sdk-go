@@ -8,7 +8,7 @@ type User struct {
 	UserName      string         `mapstructure:"user_name" json:"user_name"`
 	PhoneCode     string         `mapstructure:"phone_code" json:"phone_code"`
 	PhoneNumber   string         `mapstructure:"phone_number" json:"phone_number"`
-	MfaCredential *MfaCredential `mapstructure:"mfa_credential" json:"mfa_credential"`
+	//MfaCredential *MfaCredential `mapstructure:"mfa_credential" json:"mfa_credential"`
 	Email         string         `mapstructure:"email" json:"email"`
 	Description   string         `mapstructure:"description" json:"description"`
 	Attributes    string         `mapstructure:"attributes" json:"attributes"`

@@ -26,6 +26,17 @@ func (ir AppRequest) AuthByFoxone(ctx context.Context, authReq *FoxoneAuthReq) (
 	return &userResp, nil
 }
 
+// AuthByFoxone AuthByFoxone
+func (ir AppRequest) AuthByWechat(ctx context.Context, authReq *WechatAuthReq) (*User, *AppError) {
+	var userResp User
+
+	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/app/auths/wechat"), authReq, &userResp); err != nil {
+		return nil, err
+	}
+
+	return &userResp, nil
+}
+
 // GetAuths GetAuths
 func (ir AppRequest) GetAuths(ctx context.Context, provider string, offset, limit int) (*AuthorizationList, *AppError) {
 	var auths AuthorizationList
@@ -103,9 +114,9 @@ func (ir AppRequest) GenMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVeri
 }
 
 // VerifyMfaPhoneCode VerifyMfaPhoneCode
-func (ir AppRequest) VerifyMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVerifyRequest) (*User, *AppError) {
+func (ir AppRequest) VerifyMfaPhoneCode(ctx context.Context, verifyReq *PhoneCodeVerifyRequest) (*User, *AppError) {
 	var user User
-	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/mfa/phone/verify"), authReq, &user); err != nil {
+	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/mfa/phone/verify"), verifyReq, &user); err != nil {
 		return nil, err
 	}
 

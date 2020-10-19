@@ -38,7 +38,7 @@ func NewAppRequestJwt(token, serverURL string) *AppRequest {
 }
 
 // GetApp GetApp
-func (ir AppRequest) GetApp(ctx context.Context) (*Application, *AppError) {
+func (ir AppRequest) GetApp(ctx context.Context) (*Application, error) {
 	var res Application
 
 	url := fmt.Sprintf("%s/v1/app", ir.ServerURL)

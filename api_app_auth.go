@@ -6,7 +6,7 @@ import (
 )
 
 // AuthByMixin AuthByMixin
-func (ir AppRequest) AuthByMixin(ctx context.Context, authReq *MixinAuthReq) (*User, *AppError) {
+func (ir AppRequest) AuthByMixin(ctx context.Context, authReq *MixinAuthReq) (*User, error) {
 	var userResp User
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/app/auths/mixin"), authReq, &userResp); err != nil {
 		return nil, err
@@ -16,7 +16,7 @@ func (ir AppRequest) AuthByMixin(ctx context.Context, authReq *MixinAuthReq) (*U
 }
 
 // AuthByFoxone AuthByFoxone
-func (ir AppRequest) AuthByFoxone(ctx context.Context, authReq *FoxoneAuthReq) (*User, *AppError) {
+func (ir AppRequest) AuthByFoxone(ctx context.Context, authReq *FoxoneAuthReq) (*User, error) {
 	var userResp User
 
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/app/auths/foxone"), authReq, &userResp); err != nil {
@@ -27,7 +27,7 @@ func (ir AppRequest) AuthByFoxone(ctx context.Context, authReq *FoxoneAuthReq) (
 }
 
 // AuthByFoxone AuthByFoxone
-func (ir AppRequest) AuthByWechat(ctx context.Context, authReq *WechatAuthReq) (*User, *AppError) {
+func (ir AppRequest) AuthByWechat(ctx context.Context, authReq *WechatAuthReq) (*User, error) {
 	var userResp User
 
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/app/auths/wechat"), authReq, &userResp); err != nil {
@@ -38,7 +38,7 @@ func (ir AppRequest) AuthByWechat(ctx context.Context, authReq *WechatAuthReq) (
 }
 
 // GetAuths GetAuths
-func (ir AppRequest) GetAuths(ctx context.Context, provider string, offset, limit int) (*AuthorizationList, *AppError) {
+func (ir AppRequest) GetAuths(ctx context.Context, provider string, offset, limit int) (*AuthorizationList, error) {
 	var auths AuthorizationList
 	var url = fmt.Sprintf("%s/v1/app/auths?provider=%s&limit=%v&offset=%v", ir.ServerURL, provider, limit, offset)
 
@@ -50,7 +50,7 @@ func (ir AppRequest) GetAuths(ctx context.Context, provider string, offset, limi
 }
 
 // GenToken GenToken
-func (ir AppRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*Token, *AppError) {
+func (ir AppRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*Token, error) {
 	var tokenRes Token
 	var url = fmt.Sprintf("%s/v1/app/users/%v/tokens", ir.ServerURL, req.Audience)
 
@@ -62,7 +62,7 @@ func (ir AppRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*To
 }
 
 // GenMfaToken GenMfaToken
-func (ir AppRequest) GenMfaToken(ctx context.Context, userID uint64) (string, *AppError) {
+func (ir AppRequest) GenMfaToken(ctx context.Context, userID uint64) (string, error) {
 	var tokenRes struct {
 		MfaToken string `json:"mfa_token"`
 	}
@@ -76,7 +76,7 @@ func (ir AppRequest) GenMfaToken(ctx context.Context, userID uint64) (string, *A
 }
 
 // GetAuthByOAuthID GetAuthByOAuthID
-func (ir AppRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProviderTypeEnum, oauthID string) (*Authorization, *AppError) {
+func (ir AppRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProviderTypeEnum, oauthID string) (*Authorization, error) {
 	var auth Authorization
 	var url = fmt.Sprintf("%s/v1/app/%s/auths/%s", ir.ServerURL, provider, oauthID)
 
@@ -88,7 +88,7 @@ func (ir AppRequest) GetAuthByOAuthID(ctx context.Context, provider AuthProvider
 }
 
 // GetAuthsByOAuthIDs GetAuthsByOAuthIDs
-func (ir AppRequest) GetAuthsByOAuthIDs(ctx context.Context, provider AuthProviderTypeEnum, oauthIDs []string) ([]*Authorization, *AppError) {
+func (ir AppRequest) GetAuthsByOAuthIDs(ctx context.Context, provider AuthProviderTypeEnum, oauthIDs []string) ([]*Authorization, error) {
 	var auth []*Authorization
 	var url = fmt.Sprintf("%s/v1/app/%s/auths/batch", ir.ServerURL, provider)
 
@@ -100,7 +100,7 @@ func (ir AppRequest) GetAuthsByOAuthIDs(ctx context.Context, provider AuthProvid
 }
 
 // GenMfaPhoneCode GenMfaPhoneCode
-func (ir AppRequest) GenMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVerifyRequest) (string, *AppError) {
+func (ir AppRequest) GenMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVerifyRequest) (string, error) {
 	var result map[string]interface{}
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/mfa/phone"), authReq, &result); err != nil {
 		return "", err
@@ -114,7 +114,7 @@ func (ir AppRequest) GenMfaPhoneCode(ctx context.Context, authReq *PhoneCodeVeri
 }
 
 // VerifyMfaPhoneCode VerifyMfaPhoneCode
-func (ir AppRequest) VerifyMfaPhoneCode(ctx context.Context, verifyReq *PhoneCodeVerifyRequest) (*User, *AppError) {
+func (ir AppRequest) VerifyMfaPhoneCode(ctx context.Context, verifyReq *PhoneCodeVerifyRequest) (*User, error) {
 	var user User
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/mfa/phone/verify"), verifyReq, &user); err != nil {
 		return nil, err
@@ -124,7 +124,7 @@ func (ir AppRequest) VerifyMfaPhoneCode(ctx context.Context, verifyReq *PhoneCod
 }
 
 // BindAuth BindAuth
-func (ir AppRequest) BindAuth(ctx context.Context, req AuthBindingRequest) (*Authorization, *AppError) {
+func (ir AppRequest) BindAuth(ctx context.Context, req AuthBindingRequest) (*Authorization, error) {
 	var auth Authorization
 	if err := Execute(ir.getRequest(ctx), "PUT", fmt.Sprintf("%s/v1/app/users/%v/auths/%s/bind", ir.ServerURL, req.UserID, req.Provider), req, &auth); err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ func (ir AppRequest) BindAuth(ctx context.Context, req AuthBindingRequest) (*Aut
 }
 
 // UnbindAuth BindAuth
-func (ir AppRequest) UnbindAuth(ctx context.Context, userID uint64, provider AuthProviderTypeEnum) *AppError {
+func (ir AppRequest) UnbindAuth(ctx context.Context, userID uint64, provider AuthProviderTypeEnum) error {
 	var result map[string]interface{}
 	if err := Execute(ir.getRequest(ctx), "DELETE", fmt.Sprintf("%s/v1/app/users/%v/auths/%s/bind", ir.ServerURL, userID, provider), nil, &result); err != nil {
 		return err

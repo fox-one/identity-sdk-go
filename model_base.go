@@ -1,5 +1,9 @@
 package identity
 
+import "fmt"
+
+const ErrorOk = 0
+
 // AppError AppError
 type AppError struct {
 	ErrorCode int    `json:"code"`
@@ -7,8 +11,8 @@ type AppError struct {
 }
 
 // Error Error
-func (err AppError) Error() string {
-	return err.ErrorMsg
+func (err *AppError) Error() string {
+	return fmt.Sprintf("code: %d, message: %s", err.ErrorCode, err.ErrorMsg)
 }
 
 // NewAppError NewAppError

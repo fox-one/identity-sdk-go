@@ -3,7 +3,6 @@ package identity
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -36,16 +35,14 @@ func Client() *resty.Client {
 }
 
 // Execute Execute
-func Execute(request *resty.Request, method, url string, body interface{}, resp interface{}) *AppError {
-	fmt.Printf("url:%s", url)
-
+func Execute(request *resty.Request, method, url string, body interface{}, resp interface{}) error {
 	if body != nil {
 		request = request.SetBody(body)
 	}
 
 	r, err := request.Execute(strings.ToUpper(method), url)
 	if err != nil {
-		return NewAppError(err.Error())
+		return err
 	}
 
 	//检查requestid
@@ -55,33 +52,28 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 	if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
 		return NewAppError("RequestID Not Match")
 	}
-	fmt.Println("============resp", resp)
 
 	return ParseResponse(r, resp)
 }
 
 // ParseResponse ParseResponse
-func ParseResponse(r *resty.Response, obj interface{}) *AppError {
+func ParseResponse(r *resty.Response, obj interface{}) error {
 	if r.IsSuccess() {
-		if obj != nil {
-			e := json.Unmarshal(r.Body(), obj)
-			if e != nil {
-				fmt.Println("parseResponse:%s", e.Error())
-				return NewAppError(e.Error())
-			}
-			return nil
+		if err := json.Unmarshal([]byte(r.Body()),obj); err != nil {
+			return err
 		}
-
 		return nil
 	}
 
-	var appErr AppError
-	e := json.Unmarshal(r.Body(), &appErr)
-	if e != nil {
-		return NewAppError(e.Error())
+	if r.IsError() {
+		var appErr AppError
+		if err := json.Unmarshal([]byte(r.Body()),obj); err != nil {
+			return err
+		}
+		return &appErr
 	}
 
-	return &appErr
+	return nil
 }
 
 // GenRequestID GenRequestID

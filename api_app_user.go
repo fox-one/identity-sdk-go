@@ -8,7 +8,7 @@ import (
 )
 
 // GetAllUsers GetAllUsers
-func (ir AppRequest) GetAllUsers(ctx context.Context) ([]*User, *AppError) {
+func (ir AppRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 	var users []*User
 
 	if err := Execute(ir.getRequest(ctx), "GET", fmt.Sprintf("%s/v1/users", ir.ServerURL), nil, &users); err != nil {
@@ -19,7 +19,7 @@ func (ir AppRequest) GetAllUsers(ctx context.Context) ([]*User, *AppError) {
 }
 
 // GetUser GetUser
-func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, *AppError) {
+func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, error) {
 	var resp User
 
 	var expand = make([]string, 0)
@@ -43,7 +43,7 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 }
 
 // BatchGetUsers BatchGetUsers
-func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profile, mixinAuth, foxAuth bool) ([]*User, *AppError) {
+func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profile, mixinAuth, foxAuth bool) ([]*User, error) {
 	var resp []*User
 
 	var expand = make([]string, 0)
@@ -72,7 +72,7 @@ func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profil
 }
 
 // GetUserByPhone GetUser
-func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber string) (*User, *AppError) {
+func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber string) (*User, error) {
 	var resp BasePageResponse
 
 	url := fmt.Sprintf("%s/v1/users?phone_code=%s&phone_number=%s&limit=1", ir.ServerURL, phoneCode, phoneNumber)
@@ -99,7 +99,7 @@ func (ir AppRequest) GetUserByPhone(ctx context.Context, phoneCode, phoneNumber 
 }
 
 // VerifyUserPassword VerifyUserPassword
-func (ir AppRequest) VerifyUserPassword(ctx context.Context, userID uint64, password string) (*User, *AppError) {
+func (ir AppRequest) VerifyUserPassword(ctx context.Context, userID uint64, password string) (*User, error) {
 	var resp User
 
 	url := fmt.Sprintf("%s/v1/users/%v/password/verify", ir.ServerURL, userID)
@@ -112,7 +112,7 @@ func (ir AppRequest) VerifyUserPassword(ctx context.Context, userID uint64, pass
 }
 
 // CreateUser CreateUser
-func (ir AppRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, *AppError) {
+func (ir AppRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User, error) {
 	var user User
 
 	if err := Execute(ir.getRequest(ctx), "POST", fmt.Sprintf("%s%s", ir.ServerURL, "/v1/users"), req, &user); err != nil {
@@ -123,7 +123,7 @@ func (ir AppRequest) CreateUser(ctx context.Context, req *CreateUserReq) (*User,
 }
 
 // SetPassword SetPassword
-func (ir AppRequest) SetPassword(ctx context.Context, userID uint64, password string) (*User, *AppError) {
+func (ir AppRequest) SetPassword(ctx context.Context, userID uint64, password string) (*User, error) {
 	var user User
 
 	url := fmt.Sprintf("%s/v1/users/%v/password", ir.ServerURL, userID)
@@ -136,7 +136,7 @@ func (ir AppRequest) SetPassword(ctx context.Context, userID uint64, password st
 }
 
 // ChangePassword ChangePassword
-func (ir AppRequest) ChangePassword(ctx context.Context, userID uint64, oldPassword, newPassword string) (*User, *AppError) {
+func (ir AppRequest) ChangePassword(ctx context.Context, userID uint64, oldPassword, newPassword string) (*User, error) {
 	var user User
 
 	url := fmt.Sprintf("%s/v1/users/%v/password", ir.ServerURL, userID)
@@ -149,7 +149,7 @@ func (ir AppRequest) ChangePassword(ctx context.Context, userID uint64, oldPassw
 }
 
 // ChangePhone ChangePhone
-func (ir AppRequest) ChangePhone(ctx context.Context, req *UserModifyReq) (*User, *AppError) {
+func (ir AppRequest) ChangePhone(ctx context.Context, req *UserModifyReq) (*User, error) {
 	var user User
 
 	url := fmt.Sprintf("%s/v1/users/%d/phone", ir.ServerURL, req.UserID)
@@ -162,7 +162,7 @@ func (ir AppRequest) ChangePhone(ctx context.Context, req *UserModifyReq) (*User
 }
 
 // UpdateMfa UpdateMfa
-func (ir AppRequest) UpdateMfa(ctx context.Context, req *MfaCredentialRequest) (*MfaCredential, *AppError) {
+func (ir AppRequest) UpdateMfa(ctx context.Context, req *MfaCredentialRequest) (*MfaCredential, error) {
 	var resp MfaCredential
 
 	url := fmt.Sprintf("%s/v1/users/%d/mfa/two_factor", ir.ServerURL, req.UserID)
@@ -175,7 +175,7 @@ func (ir AppRequest) UpdateMfa(ctx context.Context, req *MfaCredentialRequest) (
 }
 
 // UpdateMfa UpdateMfa
-func (ir AppRequest) RemoveMfa(ctx context.Context, userID uint64) (bool, *AppError) {
+func (ir AppRequest) RemoveMfa(ctx context.Context, userID uint64) (bool, error) {
 	var result struct {
 		Success bool `json:"success"`
 	}

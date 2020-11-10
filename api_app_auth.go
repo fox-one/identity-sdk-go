@@ -146,3 +146,17 @@ func (ir AppRequest) UnbindAuth(ctx context.Context, userID uint64, provider Aut
 
 	return nil
 }
+
+// GetAuthorizedKey GetAuthorizedKey
+func (ir AppRequest) GetAuthorizedKey(ctx context.Context, authKey string) (*AuthorizedKey, error) {
+	var res AuthorizedKey
+
+	url := fmt.Sprintf("%s/v1/auth_keys/%s", ir.ServerURL, authKey)
+
+	// Request
+	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &res); nil != err {
+		return nil, err
+	}
+
+	return &res, nil
+}

@@ -28,9 +28,9 @@ type AuthorizationList struct {
 
 // AuthObject Auths
 type AuthObject struct {
-	MixinAuth  *MixinAuth        `json:"mixin,omitempty"`
-	FoxAuth    *FoxAuth          `json:"foxone,omitempty"`
-	WechatAuth *WechatCredential `json:"wechat,omitempty"`
+	MixinAuth  *MixinAuth  `json:"mixin,omitempty"`
+	FoxAuth    *FoxAuth    `json:"foxone,omitempty"`
+	WechatAuth *WechatAuth `json:"wechat,omitempty"`
 }
 
 // ================ Wechat ================== //

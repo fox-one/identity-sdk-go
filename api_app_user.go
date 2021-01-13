@@ -19,7 +19,7 @@ func (ir AppRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 }
 
 // GetUser GetUser
-func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool) (*User, error) {
+func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool, wechatAuth bool) (*User, error) {
 	var resp User
 
 	var expand = make([]string, 0)
@@ -32,6 +32,9 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 	if foxAuth {
 		expand = append(expand, "authorizations.foxone")
 	}
+	if wechatAuth {
+		expand = append(expand, "authorizations.wechat")
+	}
 
 	url := fmt.Sprintf("%s/v1/users/%v/?expand=%s", ir.ServerURL, userID, strings.Join(expand, ","))
 
@@ -43,7 +46,7 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 }
 
 // BatchGetUsers BatchGetUsers
-func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profile, mixinAuth, foxAuth bool) ([]*User, error) {
+func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profile, mixinAuth, foxAuth, wechatAuth bool) ([]*User, error) {
 	var resp []*User
 
 	var expand = make([]string, 0)
@@ -56,13 +59,16 @@ func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profil
 	if foxAuth {
 		expand = append(expand, "authorizations.foxone")
 	}
-
-	userIdStr := make([]string, 0)
-	for _, id := range userIDs {
-		userIdStr = append(userIdStr, fmt.Sprintf("%v", id))
+	if wechatAuth {
+		expand = append(expand, "authorizations.wechat")
 	}
 
-	url := fmt.Sprintf("%s/v1/users?id=%s&expand=%s", ir.ServerURL, strings.Join(userIdStr, ","), strings.Join(expand, ","))
+	userIDStr := make([]string, 0)
+	for _, id := range userIDs {
+		userIDStr = append(userIDStr, fmt.Sprintf("%v", id))
+	}
+
+	url := fmt.Sprintf("%s/v1/users?id=%s&expand=%s", ir.ServerURL, strings.Join(userIDStr, ","), strings.Join(expand, ","))
 
 	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
 		return nil, err

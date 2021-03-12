@@ -61,6 +61,18 @@ func (ir AppRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*To
 	return &tokenRes, nil
 }
 
+// RemoveToken RemoveToken
+func (ir AppRequest) RemoveToken(ctx context.Context, userID uint64) (*Token, error) {
+	var tokenRes Token
+	var url = fmt.Sprintf("%s/v1/app/users/%v/tokens", ir.ServerURL, userID)
+
+	if err := Execute(ir.getRequest(ctx), "DELETE", url, nil, &tokenRes); err != nil {
+		return nil, err
+	}
+
+	return &tokenRes, nil
+}
+
 // GenMfaToken GenMfaToken
 func (ir AppRequest) GenMfaToken(ctx context.Context, userID uint64) (string, error) {
 	var tokenRes struct {

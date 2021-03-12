@@ -62,15 +62,15 @@ func (ir AppRequest) GenToken(ctx context.Context, req *TokenCreateRequest) (*To
 }
 
 // RemoveToken RemoveToken
-func (ir AppRequest) RemoveToken(ctx context.Context, userID uint64) (*Token, error) {
-	var tokenRes Token
+func (ir AppRequest) RemoveToken(ctx context.Context, userID uint64) error {
+	var result interface{}
 	var url = fmt.Sprintf("%s/v1/app/users/%v/tokens", ir.ServerURL, userID)
 
-	if err := Execute(ir.getRequest(ctx), "DELETE", url, nil, &tokenRes); err != nil {
-		return nil, err
+	if err := Execute(ir.getRequest(ctx), "DELETE", url, nil, &result); err != nil {
+		return err
 	}
 
-	return &tokenRes, nil
+	return nil
 }
 
 // GenMfaToken GenMfaToken

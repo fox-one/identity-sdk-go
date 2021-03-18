@@ -19,7 +19,7 @@ func (ir AppRequest) GetAllUsers(ctx context.Context) ([]*User, error) {
 }
 
 // GetUser GetUser
-func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool, wechatAuth bool) (*User, error) {
+func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinAuth, foxAuth bool, wechatAuth bool, queries ...string) (*User, error) {
 	var resp User
 
 	var expand = make([]string, 0)
@@ -36,7 +36,7 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 		expand = append(expand, "authorizations.wechat")
 	}
 
-	url := fmt.Sprintf("%s/v1/users/%v/?expand=%s", ir.ServerURL, userID, strings.Join(expand, ","))
+	url := fmt.Sprintf("%s/v1/users/%v/?expand=%s&%s", ir.ServerURL, userID, strings.Join(expand, ","), strings.Join(queries, "&"))
 
 	if err := Execute(ir.getRequest(ctx), "GET", url, nil, &resp); err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (ir AppRequest) GetUser(ctx context.Context, userID uint64, profile, mixinA
 }
 
 // BatchGetUsers BatchGetUsers
-func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profile, mixinAuth, foxAuth, wechatAuth bool) ([]*User, error) {
+func (ir AppRequest) BatchGetUsers(ctx context.Context, userIDs []uint64, profile, mixinAuth, foxAuth, wechatAuth bool, query ...string) ([]*User, error) {
 	var resp []*User
 
 	var expand = make([]string, 0)

@@ -49,7 +49,7 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 	sourceReqID := request.Header.Get(RequestIDKey)
 	returnReqID := r.Header().Get(RequestIDKey)
 
-	if sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID {
+	if r.IsSuccess() && (sourceReqID == "" || returnReqID == "" || sourceReqID != returnReqID) {
 		return NewAppError("RequestID Not Match")
 	}
 
@@ -59,7 +59,7 @@ func Execute(request *resty.Request, method, url string, body interface{}, resp 
 // ParseResponse ParseResponse
 func ParseResponse(r *resty.Response, obj interface{}) error {
 	if r.IsSuccess() {
-		if err := json.Unmarshal([]byte(r.Body()),obj); err != nil {
+		if err := json.Unmarshal([]byte(r.Body()), obj); err != nil {
 			return err
 		}
 		return nil
@@ -67,7 +67,7 @@ func ParseResponse(r *resty.Response, obj interface{}) error {
 
 	if r.IsError() {
 		var appErr AppError
-		if err := json.Unmarshal([]byte(r.Body()),obj); err != nil {
+		if err := json.Unmarshal([]byte(r.Body()), &appErr); err != nil {
 			return err
 		}
 		return &appErr

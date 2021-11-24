@@ -123,7 +123,8 @@ type TokenCreateRequest struct {
 	SignAlg   string `json:"sal"`
 
 	// ExpriedAt
-	Duration time.Duration `json:"duration"` //  有效时长
+	Duration        time.Duration `json:"duration"`         //  有效时长
+	RefreshDuration time.Duration `json:"refresh_duration"` //  刷新有效时长
 }
 
 // PhoneCodeVerifyRequest PhoneCodeVerifyRequest

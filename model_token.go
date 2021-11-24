@@ -14,6 +14,7 @@ type AppJWTPayload struct {
 	Mode          string         `json:"mode,omitempty"`
 	Scheme        AuthSchemeEnum `json:"scheme,omitempty"`
 	OAuthProvider string         `json:"oap,omitempty"` //oap: OAuth Provider
+	Type          AuthTypeEnum   `json:"typ,omitempty"`
 	SessionID     string         `json:"sid,omitempty"`
 	Sign          string         `json:"sig,omitempty"`
 	SignAlg       string         `json:"sal,omitempty"`

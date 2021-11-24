@@ -165,6 +165,8 @@ const (
 	AuthTypeEnumAppuser AuthTypeEnum = "appuser"
 	// AuthTypeEnumSystem system
 	AuthTypeEnumSystem AuthTypeEnum = "system"
+	// AuthTypeEnumRefresh refresh
+	AuthTypeEnumRefresh AuthTypeEnum = "refresh"
 )
 
 func (e AuthTypeEnum) String() string {
@@ -177,6 +179,8 @@ func (e AuthTypeEnum) String() string {
 		return "appuser"
 	case AuthTypeEnumSystem:
 		return "system"
+	case AuthTypeEnumRefresh:
+		return "refresh"
 	default:
 		return ""
 	}

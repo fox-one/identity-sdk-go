@@ -22,12 +22,13 @@ type AppJWTPayload struct {
 
 // Token profile
 type Token struct {
-	AppID     uint32         `json:"app_id,omitempty"`
-	UserID    uint64         `json:"user_id,omitempty"`
-	Type      AuthTypeEnum   `json:"type,omitempty"`
-	Scheme    AuthSchemeEnum `json:"scheme,omitempty"`
-	Provider  string         `json:"oap,omitempty"`
-	Key       string         `json:"sid,omitempty"`
-	ExpriedAt *time.Time     `json:"expried_at,omitempty"`
-	Token     string         `json:"token,omitempty"`
+	AppID        uint32         `json:"app_id,omitempty"`
+	UserID       uint64         `json:"user_id,omitempty"`
+	Type         AuthTypeEnum   `json:"type,omitempty"`
+	Scheme       AuthSchemeEnum `json:"scheme,omitempty"`
+	Provider     string         `json:"oap,omitempty"`
+	Key          string         `json:"sid,omitempty"`
+	ExpriedAt    *time.Time     `json:"expried_at,omitempty"`
+	Token        string         `json:"token,omitempty"`
+	RefreshToken string         `json:"refresh_token,omitempty"`
 }
